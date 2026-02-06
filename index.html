@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Men I Core | メニコア - 自分という軸を創れ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .animate-in { animation: fade-in 0.3s ease-out; }
+        /* アイコン用スタイル */
+        .lucide { stroke-width: 2px; }
+    </style>
+</head>
+<body class="bg-[#FDFDFF]">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // アイコンをレンダリングするコンポーネント
+        const Icon = ({ name, size = 24, className = "" }) => {
+          useEffect(() => {
+            if (window.lucide) {
+              window.lucide.createIcons();
+            }
+          });
+          return <i data-lucide={name} className={className} style={{ width: size, height: size, display: 'inline-block' }}></i>;
+        };
+
+        // ロゴコンポーネント
+        const Logo = () => (
+          <div className="flex flex-col items-start text-slate-900">
+            <div className="flex items-center font-bold tracking-tight">
+              <span className="text-xl">MEN</span>
+              <span className="mx-1 text-indigo-600 font-black text-2xl">I</span>
+              <span className="text-xl">C</span>
+              <span className="relative inline-flex items-center justify-center">
+                 <span className="text-xl">O</span>
+                 <span className="absolute w-1 h-1 bg-indigo-600 rounded-full mt-0.5"></span>
+              </span>
+              <span className="text-xl">RE</span>
+            </div>
+          </div>
+        );
+
+        const App = () => {
+          const [isScrolled, setIsScrolled] = useState(false);
+          const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+          useEffect(() => {
+            const handleScroll = () => setIsScrolled(window.scrollY > 20);
+            window.addEventListener('scroll', handleScroll);
+            if (window.lucide) window.lucide.createIcons();
+            return () => window.removeEventListener('scroll', handleScroll);
+          }, []);
+
+          const navLinks = [
+            { label: 'HOME', href: '#' },
+            { label: 'DIAGNOSIS', href: '#diagnosis-select' },
+            { label: 'ARTICLE', href: '#articles' },
+            { label: 'CONCEPT', href: '#concept' },
+          ];
+
+          return (
+            <div className="min-h-screen">
+              {/* Navigation */}
+              <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 backdrop-blur-md border-b border-slate-100 h-16' : 'bg-transparent h-20'}`}>
+                <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+                  <div className="cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+                    <Logo />
+                    <span className="block text-[8px] text-slate-400 font-bold tracking-[0.2em] -mt-1 ml-[1px]">メニコア</span>
+                  </div>
+                  <button className="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMenuOpen(true)}>
+                    <Icon name="menu" />
+                  </button>
+                </div>
+              </nav>
+
+              {/* Mobile Menu */}
+              {isMenuOpen && (
+                <div className="fixed inset-0 z-[60] bg-white p-8 flex flex-col justify-between animate-in">
+                  <div>
+                    <div className="flex justify-between items-center mb-16">
+                      <Logo />
+                      <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-400">
+                        <Icon name="x" size={32} />
+                      </button>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                      {navLinks.map((link) => (
+                        <a key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between group">
+                          <span className="text-4xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors uppercase">{link.label}</span>
+                          <Icon name="chevron-right" className="text-indigo-600" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase italic">Create your core.</p>
+                </div>
+              )}
+
+              {/* Hero */}
+              <section className="relative min-h-[80vh] flex flex-col items-center justify-center pt-20 pb-12 px-6 bg-gradient-to-b from-indigo-50/50 to-white text-center">
+                <div className="animate-in space-y-6">
+                  <h1 className="text-5xl md:text-7xl font-bold leading-[1.2] tracking-tight text-slate-900">
+                    「自分」という<br />
+                    <span className="text-indigo-600">軸を創れ</span>
+                  </h1>
+                  <p className="text-slate-500 text-base md:text-lg max-w-lg mx-auto font-medium leading-relaxed">
+                    背伸びをせず、自分だけの正解を。<br />
+                    内面と外見、両方の中心（Core）を整え、<br />
+                    一生モノの自信を積み上げる。
+                  </p>
+                </div>
+              </section>
+
+              {/* Concept */}
+              <section id="concept" className="py-24 px-6 bg-white border-t border-slate-50">
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
+                  <div className="space-y-8">
+                    <h2 className="text-[10px] font-bold text-indigo-600 uppercase tracking-[0.4em]">BRAND CONCEPT</h2>
+                    <p className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight">心地よく、強い。<br />理想の自分への一歩目。</p>
+                    <p className="text-slate-500 text-lg leading-relaxed">「カッコいい」の定義は人それぞれ。だからこそ、周りに流されない「自分なりの軸」が必要です。Men I Core（メニコア）は、初心者にも分かりやすくガイドします。</p>
+                  </div>
+                  <div className="grid gap-4">
+                    <div className="p-8 border border-slate-100 bg-[#F9FBFF] rounded-[2.5rem] flex items-start gap-4">
+                      <div className="text-indigo-600 mt-1"><Icon name="smile" /></div>
+                      <div>
+                        <h4 className="text-slate-900 font-bold text-lg mb-1">01. Precision</h4>
+                        <p className="text-slate-500 text-sm">自分の現在地を知ることから。初心者でも迷わない、あなただけの正解をご提案します。</p>
+                      </div>
+                    </div>
+                    <div className="p-8 border border-slate-100 bg-[#F9FBFF] rounded-[2.5rem] flex items-start gap-4">
+                      <div className="text-indigo-600 mt-1"><Icon name="heart" /></div>
+                      <div>
+                        <h4 className="text-slate-900 font-bold text-lg mb-1">02. Essential</h4>
+                        <p className="text-slate-500 text-sm">あれこれ手を出さず、本質を。本当に必要なことだけを大切にするのが、最短の道です。</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Diagnosis */}
+              <section id="diagnosis-select" className="py-24 px-6 bg-slate-50/50 text-center">
+                <h2 className="text-[10px] font-bold text-indigo-600 uppercase tracking-[0.4em] mb-4">Core Diagnosis</h2>
+                <p className="text-3xl font-bold text-slate-900 mb-12">軸を創る診断ポータル</p>
+                <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left">
+                  {[
+                    { id: 'beginner', title: '初心者はこれから始める', desc: 'まずはここから。自分にぴったりの習慣を見つける', icon: 'target', tag: 'START GUIDE' },
+                    { id: 'skincare', title: 'スキンケアは何から買う？', desc: '肌が変われば印象が変わる。基本のケアを診断', icon: 'sparkles', tag: 'BEAUTY CARE' }
+                  ].map((item) => (
+                    <div key={item.id} className="bg-white p-8 border border-slate-200 rounded-[2.5rem] shadow-sm hover:shadow-md transition-all h-72 flex flex-col justify-between group cursor-pointer">
+                      <div>
+                        <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 text-indigo-600">
+                          <Icon name={item.icon} size={28} />
+                        </div>
+                        <span className="text-[9px] font-bold text-indigo-600 tracking-widest uppercase">{item.tag}</span>
+                        <h3 className="text-xl font-bold text-slate-900 mt-1">{item.title}</h3>
+                        <p className="text-sm text-slate-500 mt-2">{item.desc}</p>
+                      </div>
+                      <div className="text-indigo-600 text-sm font-bold flex items-center gap-1">診断を始める <Icon name="chevron-right" size={16} /></div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Article Section - 復活させました！ */}
+              <section id="articles" className="py-24 px-6 bg-white">
+                <div className="max-w-7xl mx-auto">
+                  <div className="flex justify-between items-baseline mb-12 border-b border-slate-50 pb-6">
+                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Article</h2>
+                    <span className="text-xs font-bold text-indigo-600 tracking-widest uppercase">Knowledge</span>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-10 text-left">
+                    {[
+                      { title: "はじめての方向け。毎日の生活に「軸」を取り入れるコツ", cat: "CORE", date: "2025.02.05" },
+                      { title: "清潔感は食事から。今日から変えられる食事の選び方", cat: "FOOD", date: "2025.02.04" },
+                      { title: "続けられるから意味がある。三日坊主を防ぐ習慣化", cat: "GUIDE", date: "2025.02.03" }
+                    ].map((item, i) => (
+                      <div key={i} className="group cursor-pointer space-y-4">
+                        <div className="aspect-[16/10] bg-slate-50 rounded-[2rem] overflow-hidden relative border border-slate-100">
+                          <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors"></div>
+                          <div className="absolute top-4 left-6">
+                             <span className="text-[9px] font-bold text-indigo-600 bg-white/90 backdrop-blur-sm px-2 py-1 rounded shadow-sm tracking-wider uppercase">{item.cat}</span>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold leading-snug text-slate-900 group-hover:text-indigo-600 transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-slate-400 font-bold">{item.date}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Footer */}
+              <footer className="bg-white pt-20 pb-12 px-6 border-t border-slate-100 text-center">
+                <div className="max-w-7xl mx-auto flex flex-col items-center">
+                  <Logo />
+                  <p className="text-[10px] text-slate-400 font-bold tracking-[0.2em] uppercase mt-4 mb-8 italic">Build your own axis. Defeat the noise.</p>
+                  <div className="h-px bg-slate-50 w-full mb-8"></div>
+                  <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">© 2025 Men I Core. メニコア</p>
+                </div>
+              </footer>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+

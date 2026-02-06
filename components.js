@@ -1,15 +1,6 @@
 const components = {
     // ==========================================
     // 記事データベース
-    // 記事を新しく追加する場合は、この配列の先頭にオブジェクトを追加してください。
-    // idはユニークな名前
-    // dateは追加した日時
-    // linkのパスは必ず articles/ファイル名.html という形式
-    // category に入れる文字列
-    // CORE（軸・マインド）
-    // FOOD（食事）
-    // STYLE（身だしなみ）
-    // GUIDE（初心者向け）
     // ==========================================
     articles: [
         {
@@ -23,7 +14,7 @@ const components = {
             id: 'post-02',
             date: '2025.02.04',
             category: 'FOOD',
-            title: '清潔感は食事から。今日から変えられる食事の選び方',
+            title: '清潔感は食事から. 今日から変えられる食事の選び方',
             link: 'articles/post-02.html'
         },
         {
@@ -36,12 +27,10 @@ const components = {
     ],
 
     // ==========================================
-    // 記事カードの生成 (HTML構造を完全同期)
+    // 記事カードの生成
     // ==========================================
     createArticleCard(article, isNested = false) {
-        // 下層ページ(articles/)から読み込む場合は、リンクのパスを調整
         const linkPath = isNested ? article.link.replace('articles/', '') : article.link;
-        
         return `
             <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4">
                 <div class="aspect-[16/10] bg-slate-50 rounded-[2rem] border border-slate-100 relative overflow-hidden">
@@ -69,7 +58,7 @@ const components = {
                 <a href="${prefix}index.html" class="flex items-center font-bold tracking-tight text-lg text-slate-900">
                     <span>MEN</span><span class="mx-1 text-indigo-600 font-black">I</span><span>CORE</span>
                 </a>
-                <button onclick="components.toggleMenu(true)" class="p-2 text-slate-400 hover:text-slate-900">
+                <button onclick="components.toggleMenu(true)" class="p-2 text-slate-400 hover:text-slate-900 transition-colors">
                     <i data-lucide="menu"></i>
                 </button>
             </div>
@@ -106,22 +95,36 @@ const components = {
     initMobileMenu() {
         if (document.getElementById('common-mobile-menu')) return;
         
-        const isNested = window.location.pathname.includes('/articles/');
+        const path = window.location.pathname;
+        const isNested = path.includes('/articles/');
         const prefix = isNested ? '../' : '';
+
+        const menuLinks = [
+            { label: 'HOME', href: prefix + 'index.html', active: path.endsWith('index.html') || path.endsWith('/') },
+            { label: 'DIAGNOSIS', href: prefix + 'diagnosis.html', active: path.includes('diagnosis.html') },
+            { label: 'ARTICLE', href: prefix + 'index.html#articles', active: false },
+            { label: 'CONCEPT', href: prefix + 'concept.html', active: path.includes('concept.html') }
+        ];
 
         const menu = document.createElement('div');
         menu.id = 'common-mobile-menu';
         menu.style.display = 'none';
         menu.className = "fixed inset-0 z-[60] bg-white p-8 flex flex-col items-center justify-center gap-8 animate-in";
+        
+        const linksHtml = menuLinks.map(link => `
+            <a href="${link.href}" 
+               onclick="components.toggleMenu(false)"
+               class="text-4xl font-bold tracking-tight transition-colors duration-300 hover:text-indigo-600 ${link.active ? 'text-indigo-600' : 'text-slate-900'} uppercase">
+               ${link.label}
+            </a>
+        `).join('');
+
         menu.innerHTML = `
-            <button onclick="components.toggleMenu(false)" class="absolute top-6 right-6 p-2 text-slate-400">
+            <button onclick="components.toggleMenu(false)" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 transition-colors">
                 <i data-lucide="x"></i>
             </button>
-            <div class="flex flex-col gap-8 text-center font-bold text-3xl tracking-tight">
-                <a href="${prefix}index.html">HOME</a>
-                <a href="${prefix}diagnosis.html">DIAGNOSIS</a>
-                <a href="${prefix}index.html#articles">ARTICLE</a>
-                <a href="${prefix}concept.html">CONCEPT</a>
+            <div class="flex flex-col gap-8 text-center">
+                ${linksHtml}
             </div>
         `;
         document.body.appendChild(menu);
@@ -135,23 +138,19 @@ const components = {
         this.initMobileMenu();
         this.initFooter();
         
-        // 記事一覧(グリッド)の描画
         const recentContainer = document.getElementById('recent-articles-grid');
         if (recentContainer) {
             const isNested = window.location.pathname.includes('/articles/');
-            // 最新3件を表示
             recentContainer.innerHTML = this.articles
                 .slice(0, 3)
                 .map(article => this.createArticleCard(article, isNested))
                 .join('');
         }
 
-        // Lucideアイコンを適用
         if (window.lucide) {
             window.lucide.createIcons();
         }
     }
 };
 
-// DOMの読み込み完了時に実行
 window.addEventListener('DOMContentLoaded', () => components.render());

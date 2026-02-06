@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONCEPT | Men I Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; margin: 0; }
+        .lucide { stroke-width: 2px; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { transform: scale(1.05); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .animate-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-scale { animation: scaleIn 1.2s ease-out forwards; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 共通ヘッダー挿入ポイント -->
+    <nav id="common-navbar"></nav>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="pt-40 pb-24 px-6 text-center overflow-hidden">
+            <div class="max-w-4xl mx-auto space-y-8 relative">
+                <div class="inline-flex items-center gap-2 text-indigo-600 font-bold text-xs tracking-[0.4em] uppercase animate-up">
+                    <span>Our Philosophy</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[1.1] animate-up" style="animation-delay: 0.1s;">
+                    NOISELESS<br /><span class="text-indigo-600">CORE.</span>
+                </h1>
+                <p class="text-slate-500 font-medium text-lg md:text-xl leading-relaxed max-w-2xl mx-auto animate-up" style="animation-delay: 0.2s;">
+                    情報が溢れる時代だからこそ、<br class="hidden md:block" />
+                    外側の声ではなく、内側の軸（コア）に従う。
+                </p>
+            </div>
+        </section>
+
+        <!-- Message Section -->
+        <section class="py-24 px-6 bg-white border-t border-slate-50">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+                <div class="relative aspect-square bg-slate-50 rounded-[3rem] overflow-hidden animate-scale">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                         <div class="w-32 h-32 border-2 border-indigo-600/20 rounded-full animate-ping"></div>
+                         <div class="absolute w-4 h-4 bg-indigo-600 rounded-full"></div>
+                    </div>
+                    <div class="absolute bottom-10 left-10 text-slate-900 font-black text-6xl opacity-10 uppercase tracking-tighter">Identity</div>
+                </div>
+                <div class="space-y-10 animate-up">
+                    <h2 class="text-3xl font-black tracking-tight text-slate-900">
+                        「カッコいい」を<br />
+                        消費しない。
+                    </h2>
+                    <div class="space-y-6 text-slate-500 leading-loose font-medium">
+                        <p>
+                            トレンドは瞬く間に過ぎ去り、正解は常に書き換えられます。誰かが決めた「カッコいい」を追いかけるだけの毎日は、いつかあなたを疲れさせてしまう。
+                        </p>
+                        <p>
+                            Men I Coreが提案するのは、流行に依存しない「自分だけの軸」を創ること。それは、肌を整えること、食に向き合うこと、そして自分の意志で選択することから始まります。
+                        </p>
+                        <p>
+                            私たちは、あなたがあなた自身の中心（Core）を見つけ、一生モノの自信を積み上げるためのガイドでありたいと考えています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Three Pillars -->
+        <section class="py-32 px-6 bg-slate-900 text-white rounded-t-[3rem] md:rounded-t-[5rem] -mt-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20 space-y-4">
+                    <h2 class="text-xs font-bold text-indigo-400 uppercase tracking-[0.4em]">3 Elements to Build Core</h2>
+                    <p class="text-3xl font-bold tracking-tight">軸を構成する3つの要素</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div class="space-y-6 p-8 border border-white/10 rounded-[2.5rem] hover:bg-white/5 transition-colors">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="shield-check" class="text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Authentic Self</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed font-medium">
+                            虚勢を張るのではなく、今の自分を正しく理解する。ありのままの自分を土台に、着実な成長を目指します。
+                        </p>
+                    </div>
+                    <div class="space-y-6 p-8 border border-white/10 rounded-[2.5rem] hover:bg-white/5 transition-colors">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="zap" class="text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Clean Energy</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed font-medium">
+                            身体に取り入れるもの、肌に触れるもの。本質的なケアを通じて、内側から溢れ出す清潔感と活力を育みます。
+                        </p>
+                    </div>
+                    <div class="space-y-6 p-8 border border-white/10 rounded-[2.5rem] hover:bg-white/5 transition-colors">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="compass" class="text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Decisive Mind</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed font-medium">
+                            情報のノイズを遮断し、自分にとって本当に価値のあるものを選ぶ力。その決断の積み重ねが、揺るがない軸となります。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 共通フッター挿入ポイント -->
+    <footer id="common-footer"></footer>
+
+    <!-- 共通コンポーネント読み込み -->
+    <script src="components.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTICLES | Men I Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; margin: 0; }
+        .lucide { stroke-width: 2px; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-up { animation: fadeInUp 0.6s ease-out forwards; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 共通ヘッダー挿入ポイント -->
+    <nav id="common-navbar"></nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6">
+        <div class="max-w-6xl mx-auto space-y-16">
+            
+            <!-- Page Header -->
+            <div class="space-y-4 animate-up">
+                <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs tracking-[0.3em] uppercase">
+                    <i data-lucide="book-open" style="width:14px; height:14px;"></i>
+                    <span>KNOWLEDGE ARCHIVE</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
+                    軸を創るための<span class="text-indigo-600">知恵</span>
+                </h1>
+                <p class="text-slate-500 font-medium text-sm leading-relaxed max-w-lg">
+                    外見の整え方から、揺るがないマインドセットまで。本質的な自分磨きをサポートする記事を届けています。
+                </p>
+            </div>
+
+            <!-- Category Filter (将来用) -->
+            <div class="flex flex-wrap gap-2 animate-up" style="animation-delay: 0.1s;">
+                <button class="px-6 py-2 bg-slate-900 text-white text-xs font-bold rounded-full uppercase tracking-widest">All</button>
+                <button class="px-6 py-2 bg-white border border-slate-100 text-slate-400 text-xs font-bold rounded-full uppercase tracking-widest hover:border-indigo-600 hover:text-indigo-600 transition-all">Core</button>
+                <button class="px-6 py-2 bg-white border border-slate-100 text-slate-400 text-xs font-bold rounded-full uppercase tracking-widest hover:border-indigo-600 hover:text-indigo-600 transition-all">Beauty</button>
+                <button class="px-6 py-2 bg-white border border-slate-100 text-slate-400 text-xs font-bold rounded-full uppercase tracking-widest hover:border-indigo-600 hover:text-indigo-600 transition-all">Food</button>
+                <button class="px-6 py-2 bg-white border border-slate-100 text-slate-400 text-xs font-bold rounded-full uppercase tracking-widest hover:border-indigo-600 hover:text-indigo-600 transition-all">Habit</button>
+            </div>
+
+            <!-- Article Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 animate-up" style="animation-delay: 0.2s;">
+                
+                <!-- Article Item 1 -->
+                <article onclick="location.href='articles/post-01.html'" class="group cursor-pointer space-y-5">
+                    <div class="aspect-[16/10] bg-slate-100 rounded-[2.5rem] border border-slate-100 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors duration-500"></div>
+                        <!-- Placeholder for image -->
+                        <div class="w-full h-full flex items-center justify-center text-slate-200">
+                             <i data-lucide="image" style="width:48px; height:48px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-3 px-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Core</span>
+                            <span class="text-[10px] font-bold text-slate-300">2025.02.05</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">はじめての方向け。毎日の生活に「軸」を取り入れるコツ</h3>
+                        <p class="text-sm text-slate-500 font-medium line-clamp-2">「何から始めればいいかわからない」そんな迷いを解消し、日々のルーティンに自分らしさを組み込む方法を解説。</p>
+                    </div>
+                </article>
+
+                <!-- Article Item 2 -->
+                <article onclick="location.href='articles/post-02.html'" class="group cursor-pointer space-y-5">
+                    <div class="aspect-[16/10] bg-slate-100 rounded-[2.5rem] border border-slate-100 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors duration-500"></div>
+                        <div class="w-full h-full flex items-center justify-center text-slate-200">
+                             <i data-lucide="image" style="width:48px; height:48px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-3 px-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Food</span>
+                            <span class="text-[10px] font-bold text-slate-300">2025.02.04</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">清潔感は食事から。今日から変えられる食事の選び方</h3>
+                        <p class="text-sm text-slate-500 font-medium line-clamp-2">外見のケアと同じくらい大切なインナーケア。肌荒れを防ぎ、活力を生むための食材選びの基本。</p>
+                    </div>
+                </article>
+
+                <!-- Article Item 3 -->
+                <article onclick="location.href='articles/post-03.html'" class="group cursor-pointer space-y-5">
+                    <div class="aspect-[16/10] bg-slate-100 rounded-[2.5rem] border border-slate-100 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors duration-500"></div>
+                        <div class="w-full h-full flex items-center justify-center text-slate-200">
+                             <i data-lucide="image" style="width:48px; height:48px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-3 px-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Guide</span>
+                            <span class="text-[10px] font-bold text-slate-300">2025.02.03</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">続けられるから意味がある。三日坊主を防ぐ習慣化の科学</h3>
+                        <p class="text-sm text-slate-500 font-medium line-clamp-2">気合いだけでは続かない。脳の仕組みを理解して、努力を「当たり前」に変えるステップ。 </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Pagination (Placeholder) -->
+            <div class="pt-12 flex justify-center animate-up" style="animation-delay: 0.3s;">
+                <nav class="flex items-center gap-2">
+                    <button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 text-white font-bold text-sm">1</button>
+                    <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 font-bold text-sm hover:border-indigo-600 hover:text-indigo-600 transition-all">2</button>
+                    <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 font-bold text-sm hover:border-indigo-600 hover:text-indigo-600 transition-all">
+                        <i data-lucide="chevron-right" style="width:16px; height:16px;"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- 共通フッター挿入ポイント -->
+    <footer id="common-footer"></footer>
+
+    <!-- 共通コンポーネント読み込み -->
+    <script src="components.js"></script>
+</body>
+</html>
+

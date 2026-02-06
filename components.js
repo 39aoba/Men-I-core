@@ -4,7 +4,7 @@
  */
 
 const components = {
-    // ロゴのHTML構造（ドットのデザインを維持）
+    // ロゴのHTML構造
     logo: `
       <div class="flex flex-col items-start group">
           <div class="flex items-center font-bold tracking-tight text-xl text-slate-900">
@@ -38,7 +38,6 @@ const components = {
             </div>
         `;
 
-        // スクロール時のエフェクト
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
                 nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-slate-100', 'h-16', 'shadow-sm');
@@ -50,9 +49,8 @@ const components = {
         });
     },
 
-    // モバイルメニュー（ハンバーガーメニュー展開時）
+    // モバイルメニュー（リンク先を .html に修正）
     initMobileMenu() {
-        // すでに存在する場合は削除して再生成
         const existingMenu = document.getElementById('common-mobile-menu');
         if (existingMenu) existingMenu.remove();
 
@@ -75,8 +73,8 @@ const components = {
             <div class="flex flex-col gap-8 text-center">
                 <a href="index.html" onclick="components.toggleMenu(false)" class="nav-link-home text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">HOME</a>
                 <a href="diagnosis.html" onclick="components.toggleMenu(false)" class="nav-link-diagnosis text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">DIAGNOSIS</a>
-                <a href="index.html#articles" onclick="components.toggleMenu(false)" class="text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">ARTICLE</a>
-                <a href="index.html#concept" onclick="components.toggleMenu(false)" class="text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">CONCEPT</a>
+                <a href="articles.html" onclick="components.toggleMenu(false)" class="nav-link-articles text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">ARTICLE</a>
+                <a href="concept.html" onclick="components.toggleMenu(false)" class="nav-link-concept text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors uppercase">CONCEPT</a>
             </div>
             <div class="mt-auto pb-12 text-center">
                 <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase italic">Create your core.</p>
@@ -84,10 +82,14 @@ const components = {
         `;
         document.body.appendChild(menu);
 
-        // アクティブ表示（現在のページをハイライト）
+        // アクティブ表示のロジック
         const path = window.location.pathname;
         if (path.includes('diagnosis.html')) {
             menu.querySelector('.nav-link-diagnosis').classList.add('text-indigo-600');
+        } else if (path.includes('articles.html')) {
+            menu.querySelector('.nav-link-articles').classList.add('text-indigo-600');
+        } else if (path.includes('concept.html')) {
+            menu.querySelector('.nav-link-concept').classList.add('text-indigo-600');
         } else if (path.includes('index.html') || path === '/' || path.endsWith('/')) {
             menu.querySelector('.nav-link-home').classList.add('text-indigo-600');
         }
@@ -121,7 +123,6 @@ const components = {
         if (!menu) return;
         if (open) {
             menu.style.display = 'flex';
-            menu.classList.add('animate-in');
             document.body.style.overflow = 'hidden';
         } else {
             menu.style.display = 'none';

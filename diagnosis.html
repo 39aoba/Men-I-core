@@ -3,50 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIAGNOSTIC | Men I Core</title>
-    <!-- Tailwind CSS を先に読み込み -->
+    <title>DIAGNOSTIC | Men I Core - 自分という軸を創れ</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; }
-        .lucide { display: inline-block; vertical-align: middle; stroke-width: 2px; }
-        /* フェードインアニメーション */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            background-color: #FDFDFF; 
+            margin: 0; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100 screen;
         }
+        .lucide { stroke-width: 2px; display: inline-block; vertical-align: middle; }
+        
+        /* Mobile Menu */
+        #mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: white;
+            padding: 2rem;
+            flex-direction: column;
+        }
+        #mobile-menu.active { display: flex; }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-up { animation: fadeInUp 0.6s ease-out forwards; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen">
 
-    <!-- Navigation (HTMLで直接記述) -->
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 h-16">
-        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-            <a href="index.html" class="flex flex-col items-start active:opacity-70">
-                <div class="flex items-center font-bold tracking-tight text-xl">
-                    <span>MEN</span><span className="mx-1 text-indigo-600 font-black text-2xl">I</span><span>C</span>
-                    <span class="relative inline-flex items-center justify-center">
-                        <span>O</span><span class="absolute w-1 h-1 bg-indigo-600 rounded-full mt-0.5"></span>
-                    </span>
-                    <span>RE</span>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-16 flex items-center shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="flex flex-col items-start group">
+                <div class="flex items-center font-bold tracking-tight text-xl text-slate-900">
+                    <span>MEN</span><span class="mx-1 text-indigo-600 font-black text-2xl">I</span><span>CORE</span>
                 </div>
                 <span class="block text-[8px] text-slate-400 font-bold tracking-[0.2em] -mt-1 ml-[1px]">メニコア</span>
             </a>
-            <button onclick="toggleMenu()" class="p-2 text-slate-500">
+            <button onclick="toggleMenu(true)" class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Mobile Menu (Hidden by default) -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white p-8 hidden flex-col">
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu">
         <div class="flex justify-between items-center mb-16">
             <div class="flex items-center font-bold tracking-tight text-xl">
                 <span>MEN</span><span class="mx-1 text-indigo-600 font-black text-2xl">I</span><span>CORE</span>
             </div>
-            <button onclick="toggleMenu()" class="p-2 text-slate-400"><i data-lucide="x" style="width:32px; height:32px;"></i></button>
+            <button onclick="toggleMenu(false)" class="p-2 text-slate-400">
+                <i data-lucide="x" style="width:32px; height:32px;"></i>
+            </button>
         </div>
         <div class="flex flex-col gap-8 text-center text-4xl font-bold tracking-tight uppercase">
             <a href="index.html" class="hover:text-indigo-600">HOME</a>
@@ -54,12 +69,16 @@
             <a href="index.html#articles" class="hover:text-indigo-600">ARTICLE</a>
             <a href="index.html#concept" class="hover:text-indigo-600">CONCEPT</a>
         </div>
+        <div class="mt-auto pb-12 text-center">
+            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase italic">Create your core.</p>
+        </div>
     </div>
 
     <!-- Main Content -->
     <main class="flex-grow pt-32 pb-20 px-6">
         <div class="max-w-4xl mx-auto space-y-12">
             
+            <!-- Page Header -->
             <div class="space-y-4 animate-up">
                 <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs tracking-[0.3em] uppercase">
                     <i data-lucide="layout-grid" style="width:14px; height:14px;"></i>
@@ -73,12 +92,14 @@
                 </p>
             </div>
 
+            <!-- Diagnostic Cards -->
             <div class="grid gap-6 animate-up" style="animation-delay: 0.1s;">
+                
                 <!-- Card 1 -->
                 <div class="group relative bg-white border border-slate-100 rounded-[2rem] p-6 md:p-8 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 cursor-pointer overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-bl-[5rem] -z-0"></div>
                     <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50">
+                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50 transition-transform group-hover:scale-110">
                             <i data-lucide="target" class="text-indigo-600" style="width:28px; height:28px;"></i>
                         </div>
                         <div class="flex-grow space-y-1">
@@ -98,8 +119,8 @@
                 <div class="group relative bg-white border border-slate-100 rounded-[2rem] p-6 md:p-8 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 cursor-pointer overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-bl-[5rem] -z-0"></div>
                     <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50">
-                            <i data-lucide="sparkles" class="text-indigo-600" style="width:28px; height:28px;"></i>
+                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50 transition-transform group-hover:scale-110">
+                            <i data-lucide="sparkles" class="text-blue-600" style="width:28px; height:28px;"></i>
                         </div>
                         <div class="flex-grow space-y-1">
                             <span class="text-[10px] font-bold text-indigo-600 tracking-widest uppercase">BEAUTY CARE</span>
@@ -118,13 +139,13 @@
                 <div class="group relative bg-white border border-slate-100 rounded-[2rem] p-6 md:p-8 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 cursor-pointer overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 rounded-bl-[5rem] -z-0"></div>
                     <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50">
-                            <i data-lucide="utensils" class="text-indigo-600" style="width:28px; height:28px;"></i>
+                        <div class="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center shrink-0 border border-slate-50 transition-transform group-hover:scale-110">
+                            <i data-lucide="utensils" class="text-emerald-600" style="width:28px; height:28px;"></i>
                         </div>
                         <div class="flex-grow space-y-1">
                             <span class="text-[10px] font-bold text-indigo-600 tracking-widest uppercase">INNER CARE</span>
                             <h2 class="text-xl md:text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">内側から整える食事診断</h2>
-                            <p class="text-sm text-slate-500 font-medium leading-relaxed">外見だけでなく、体の中（コア）から変える。今の食生活の歪みをチェック。</p>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed">外見だけでなく、コアから変える。今の食生活の歪みをチェック。</p>
                         </div>
                         <div class="pt-4 md:pt-0 shrink-0 self-end md:self-center">
                             <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white transition-all group-hover:translate-x-1 group-hover:bg-indigo-600">
@@ -133,6 +154,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
@@ -141,25 +163,28 @@
     <footer class="py-12 px-6 border-t border-slate-100 bg-white text-center">
         <div class="max-w-4xl mx-auto flex flex-col items-center gap-4">
             <a href="index.html">
-                <div class="flex items-center font-bold tracking-tight text-xl">
+                <div class="flex items-center font-bold tracking-tight text-xl text-slate-900">
                     <span>MEN</span><span class="mx-1 text-indigo-600 font-black text-2xl">I</span><span>CORE</span>
                 </div>
             </a>
-            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">© 2025 Men I Core. メニコア</p>
+            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider italic tracking-widest">Build your own axis.</p>
+            <p class="text-[8px] text-slate-300 font-bold uppercase tracking-widest">© 2025 Men I Core. メニコア</p>
         </div>
     </footer>
 
     <script>
-        // アイコンの初期化
+        // Icons
         lucide.createIcons();
 
-        // メニューの開閉
-        function toggleMenu() {
+        // Menu Toggle
+        function toggleMenu(open) {
             const menu = document.getElementById('mobile-menu');
-            if (menu.style.display === 'flex') {
-                menu.style.display = 'none';
+            if (open) {
+                menu.classList.add('active');
+                document.body.style.overflow = 'hidden';
             } else {
-                menu.style.display = 'flex';
+                menu.classList.remove('active');
+                document.body.style.overflow = '';
             }
         }
     </script>

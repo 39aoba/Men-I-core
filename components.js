@@ -114,7 +114,7 @@ const components = {
         const linksHtml = menuLinks.map(link => `
             <a href="${link.href}" 
                onclick="components.toggleMenu(false)"
-               class="text-4xl font-bold tracking-tight transition-colors duration-300 hover:text-indigo-600 ${link.active ? 'text-indigo-600' : 'text-slate-900'} uppercase">
+               class="text-4xl font-bold tracking-tight transition-colors duration-300 ${link.active ? 'text-indigo-600' : 'text-slate-900 hover:text-slate-400'} uppercase">
                ${link.label}
             </a>
         `).join('');

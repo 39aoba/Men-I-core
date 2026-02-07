@@ -21,7 +21,7 @@ const components = {
             id: 'post-02',
             date: '2025.02.04',
             category: 'FOOD',
-            title: '清潔感は食事から. 今日から変えられる食事の選び方',
+            title: '清潔感は食事から。今日から変えられる食事の選び方',
             link: 'articles/post-02.html'
         },
         {
@@ -34,28 +34,31 @@ const components = {
     ],
 
     // ==========================================
-    // 記事カードの生成
+    // 記事カードの生成 (HTML構造を完全統一)
     // ==========================================
     createArticleCard(article, isNested = false) {
+        // articles/ フォルダ内にいる場合は、リンクから articles/ を消す
         const linkPath = isNested ? article.link.replace('articles/', '') : article.link;
+        
         return `
-            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4">
+            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4 animate-in">
                 <div class="aspect-[16/10] bg-slate-50 rounded-[2rem] border border-slate-100 relative overflow-hidden">
                     <div class="absolute inset-0 group-hover:bg-indigo-600/5 transition-colors"></div>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">${article.title}</h3>
-                <p class="text-xs text-slate-400 font-bold uppercase">${article.date} / ${article.category}</p>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">${article.title}</h3>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${article.date} / ${article.category}</p>
+                </div>
             </div>
         `;
     },
 
     // ==========================================
-    // 共通ナビゲーションの初期化
+    // ナビゲーション
     // ==========================================
     initNavbar() {
         const nav = document.getElementById('common-navbar');
         if (!nav) return;
-
         const isNested = window.location.pathname.includes('/articles/');
         const prefix = isNested ? '../' : '';
 
@@ -72,13 +75,49 @@ const components = {
         `;
     },
 
-    // ==========================================
-    // 共通フッターの初期化
-    // ==========================================
+    initMobileMenu() {
+        if (document.getElementById('common-mobile-menu')) return;
+        const path = window.location.pathname;
+        const isNested = path.includes('/articles/');
+        const prefix = isNested ? '../' : '';
+
+        const menuLinks = [
+            { label: 'HOME', href: prefix + 'index.html', active: path.endsWith('index.html') || path.endsWith('/') },
+            { label: 'DIAGNOSIS', href: prefix + 'diagnosis.html', active: path.includes('diagnosis.html') },
+            { label: 'ARTICLE', href: prefix + 'articles.html', active: path.includes('articles.html') },
+            { label: 'CONCEPT', href: prefix + 'concept.html', active: path.includes('concept.html') }
+        ];
+
+        const menu = document.createElement('div');
+        menu.id = 'common-mobile-menu';
+        menu.style.display = 'none';
+        menu.className = "fixed inset-0 z-[60] bg-white p-8 flex flex-col items-center justify-center gap-8 animate-in";
+        
+        const linksHtml = menuLinks.map(link => `
+            <a href="${link.href}" onclick="components.toggleMenu(false)"
+               class="text-4xl font-bold tracking-tight transition-colors duration-300 ${link.active ? 'text-indigo-600' : 'text-slate-900 hover:text-slate-400'} uppercase">
+               ${link.label}
+            </a>
+        `).join('');
+
+        menu.innerHTML = `
+            <button onclick="components.toggleMenu(false)" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="flex flex-col gap-8 text-center">${linksHtml}</div>
+        `;
+        document.body.appendChild(menu);
+    },
+
+    toggleMenu(open) {
+        const menu = document.getElementById('common-mobile-menu');
+        if (menu) menu.style.display = open ? 'flex' : 'none';
+        document.body.style.overflow = open ? 'hidden' : '';
+    },
+
     initFooter() {
         const footer = document.getElementById('common-footer');
         if (!footer) return;
-
         footer.className = "py-12 border-t border-slate-50 bg-white text-center";
         footer.innerHTML = `
             <div class="flex flex-col items-center">
@@ -91,53 +130,6 @@ const components = {
     },
 
     // ==========================================
-    // モバイルメニューの制御
-    // ==========================================
-    toggleMenu(open) {
-        const menu = document.getElementById('common-mobile-menu');
-        if (menu) menu.style.display = open ? 'flex' : 'none';
-        document.body.style.overflow = open ? 'hidden' : '';
-    },
-
-    initMobileMenu() {
-        if (document.getElementById('common-mobile-menu')) return;
-        
-        const path = window.location.pathname;
-        const isNested = path.includes('/articles/');
-        const prefix = isNested ? '../' : '';
-
-        const menuLinks = [
-            { label: 'HOME', href: prefix + 'index.html', active: path.endsWith('index.html') || path.endsWith('/') },
-            { label: 'DIAGNOSIS', href: prefix + 'diagnosis.html', active: path.includes('diagnosis.html') },
-            { label: 'ARTICLE', href: prefix + 'articles.html', active: false },
-            { label: 'CONCEPT', href: prefix + 'concept.html', active: path.includes('concept.html') }
-        ];
-
-        const menu = document.createElement('div');
-        menu.id = 'common-mobile-menu';
-        menu.style.display = 'none';
-        menu.className = "fixed inset-0 z-[60] bg-white p-8 flex flex-col items-center justify-center gap-8 animate-in";
-        
-        const linksHtml = menuLinks.map(link => `
-            <a href="${link.href}" 
-               onclick="components.toggleMenu(false)"
-               class="text-4xl font-bold tracking-tight transition-colors duration-300 ${link.active ? 'text-indigo-600' : 'text-slate-900 hover:text-slate-400'} uppercase">
-               ${link.label}
-            </a>
-        `).join('');
-
-        menu.innerHTML = `
-            <button onclick="components.toggleMenu(false)" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 transition-colors">
-                <i data-lucide="x"></i>
-            </button>
-            <div class="flex flex-col gap-8 text-center">
-                ${linksHtml}
-            </div>
-        `;
-        document.body.appendChild(menu);
-    },
-
-    // ==========================================
     // メインレンダリング処理
     // ==========================================
     render() {
@@ -145,11 +137,21 @@ const components = {
         this.initMobileMenu();
         this.initFooter();
         
+        const isNested = window.location.pathname.includes('/articles/');
+
+        // 1. トップページ用の「最新3件」描画
         const recentContainer = document.getElementById('recent-articles-grid');
         if (recentContainer) {
-            const isNested = window.location.pathname.includes('/articles/');
             recentContainer.innerHTML = this.articles
                 .slice(0, 3)
+                .map(article => this.createArticleCard(article, isNested))
+                .join('');
+        }
+
+        // 2. 記事一覧ページ用の「全件」描画
+        const allArticlesContainer = document.getElementById('articles-grid');
+        if (allArticlesContainer) {
+            allArticlesContainer.innerHTML = this.articles
                 .map(article => this.createArticleCard(article, isNested))
                 .join('');
         }

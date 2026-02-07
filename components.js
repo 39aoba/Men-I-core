@@ -4,6 +4,13 @@ const components = {
     // ==========================================
     articles: [
         {
+            id: 'post-04',
+            date: '2025.02.06',
+            category: 'STYLE',
+            title: '自分に似合うを見つける。メンズスタイルの基本',
+            link: 'articles/post-04.html'
+        },
+        {
             id: 'post-03',
             date: '2025.02.03',
             category: 'GUIDE',
@@ -154,3 +161,4 @@ const components = {
 };
 
 window.addEventListener('DOMContentLoaded', () => components.render());
+

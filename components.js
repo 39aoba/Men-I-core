@@ -1,5 +1,10 @@
 const components = {
     // ==========================================
+    // 状態管理
+    // ==========================================
+    currentCategory: 'ALL',
+
+    // ==========================================
     // 記事データベース
     // ==========================================
     articles: [
@@ -40,7 +45,7 @@ const components = {
         const linkPath = isNested ? article.link.replace('articles/', '') : article.link;
         
         return `
-            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4">
+            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4 animate-in">
                 <div class="aspect-[16/10] bg-slate-50 rounded-[2rem] border border-slate-100 relative overflow-hidden">
                     <div class="absolute inset-0 group-hover:bg-indigo-600/5 transition-colors"></div>
                 </div>
@@ -52,6 +57,31 @@ const components = {
         `;
     },
 
+    // ==========================================
+    // カテゴリフィルタリング処理
+    // ==========================================
+    filterArticles(category) {
+        this.currentCategory = category;
+        
+        // ボタンのスタイル更新（もしボタンが存在すれば）
+        const buttons = document.querySelectorAll('.category-btn');
+        buttons.forEach(btn => {
+            const btnCat = btn.getAttribute('data-category');
+            if (btnCat === category) {
+                btn.classList.add('bg-indigo-600', 'text-white');
+                btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-100');
+            } else {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-100');
+            }
+        });
+
+        this.renderArticles();
+    },
+
+    // ==========================================
+    // ナビゲーション & フッター
+    // ==========================================
     initNavbar() {
         const nav = document.getElementById('common-navbar');
         if (!nav) return;
@@ -126,13 +156,9 @@ const components = {
     },
 
     // ==========================================
-    // メインレンダリング処理
+    // 記事描画エンジン
     // ==========================================
-    render() {
-        this.initNavbar();
-        this.initMobileMenu();
-        this.initFooter();
-        
+    renderArticles() {
         const isNested = window.location.pathname.includes('/articles/');
 
         // 1. トップページ用の「最新3件」
@@ -144,17 +170,33 @@ const components = {
                 .join('');
         }
 
-        // 2. 記事一覧ページ用の描画 (ID名を article-grid に修正)
+        // 2. 記事一覧ページ用の描画 (フィルタ適用)
         const allArticlesContainer = document.getElementById('article-grid');
         if (allArticlesContainer) {
-            allArticlesContainer.innerHTML = this.articles
-                .map(article => this.createArticleCard(article, isNested))
-                .join('');
+            const filtered = this.currentCategory === 'ALL' 
+                ? this.articles 
+                : this.articles.filter(a => a.category === this.currentCategory);
+
+            if (filtered.length === 0) {
+                allArticlesContainer.innerHTML = `<p class="col-span-full text-center py-20 text-slate-400 font-bold">COMING SOON...</p>`;
+            } else {
+                allArticlesContainer.innerHTML = filtered
+                    .map(article => this.createArticleCard(article, isNested))
+                    .join('');
+            }
         }
 
-        if (window.lucide) {
-            window.lucide.createIcons();
-        }
+        if (window.lucide) window.lucide.createIcons();
+    },
+
+    // ==========================================
+    // メインレンダリング処理
+    // ==========================================
+    render() {
+        this.initNavbar();
+        this.initMobileMenu();
+        this.initFooter();
+        this.renderArticles();
     }
 };
 

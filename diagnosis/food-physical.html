@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOD & PHYSICAL DIAGNOSIS | Men I Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; color: #1e293b; overflow-x: hidden; }
+        .lucide { stroke-width: 2px; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .option-btn:hover { border-color: #4f46e5; background-color: #f8faff; transform: translateX(8px); }
+        .hidden { display: none; }
+        .progress-bar { transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav id="common-navbar"></nav>
+
+    <main class="flex-grow pt-32 pb-24 px-6 flex items-center justify-center">
+        <div id="diagnosis-app" class="max-w-2xl w-full">
+            
+            <!-- Question Screen -->
+            <div id="question-screen" class="space-y-12">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-end">
+                        <span id="q-category" class="text-[10px] font-black text-emerald-600 tracking-[0.3em] uppercase italic">Category: Biological Basis</span>
+                        <span id="q-step" class="text-[10px] font-black text-slate-300 tracking-widest uppercase">01 / 05</span>
+                    </div>
+                    <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="progress" class="progress-bar h-full bg-emerald-600" style="width: 20%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-8 animate-in" id="question-content">
+                    <h2 id="q-text" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight">質問内容</h2>
+                    <div id="options-grid" class="grid gap-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="hidden space-y-12 animate-in text-center">
+                <div class="space-y-6">
+                    <div class="flex justify-center">
+                        <div id="result-icon" class="w-24 h-24 bg-emerald-900 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
+                            <i data-lucide="utensils" style="width:40px; height:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-emerald-600 tracking-[0.4em] uppercase text-center">Your Biological Core</p>
+                        <h2 id="result-title" class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Result Title</h2>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm space-y-6 text-left">
+                    <div class="prose prose-slate">
+                        <p id="result-desc" class="text-slate-600 font-medium leading-relaxed">分析結果の詳細テキスト。</p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-50">
+                        <h4 class="text-[10px] font-black text-slate-900 tracking-widest uppercase mb-4">今日から始めるアクションプラン</h4>
+                        <ul id="action-list" class="space-y-3 text-sm font-bold text-slate-500">
+                            <!-- Action items injected by JS -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase italic text-center">Recommended for Body Reform</p>
+                    <div id="recommended-card" class="max-w-sm mx-auto">
+                        <!-- Article card injected by JS -->
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <button onclick="location.reload()" class="text-[10px] font-black text-slate-300 hover:text-emerald-600 transition-colors uppercase tracking-[0.3em] flex items-center gap-2 mx-auto">
+                        <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+                        Re-Analyze Body
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="common-footer"></footer>
+
+    <script src="../components.js"></script>
+    <script>
+        const diagnosisData = {
+            questions: [
+                {
+                    text: "昼食後、14時〜16時ごろのあなたの状態として最も近いものは？",
+                    category: "Blood Sugar Control",
+                    options: [
+                        { text: "強い眠気に襲われ、集中力が著しく低下する", score: { SPIKE: 2, DEFICIT: 0, OPTIMAL: 0 } },
+                        { text: "少しボーッとするが、コーヒーなどで対応できる", score: { SPIKE: 1, DEFICIT: 0, OPTIMAL: 0 } },
+                        { text: "夕方まで安定したエネルギーを維持できている", score: { SPIKE: 0, DEFICIT: 0, OPTIMAL: 2 } }
+                    ]
+                },
+                {
+                    text: "普段の食事で「タンパク質」をどの程度意識していますか？",
+                    category: "Nutrient Density",
+                    options: [
+                        { text: "麺類やパンなど、炭水化物メインの食事が多い", score: { SPIKE: 1, DEFICIT: 2, OPTIMAL: 0 } },
+                        { text: "意識はしているが、毎食摂取できているわけではない", score: { SPIKE: 0, DEFICIT: 1, OPTIMAL: 1 } },
+                        { text: "毎食、自分の体重に見合った量を計算して摂っている", score: { SPIKE: 0, DEFICIT: 0, OPTIMAL: 2 } }
+                    ]
+                },
+                {
+                    text: "「空腹」を感じた時、あなたの反応は？",
+                    category: "Metabolic Flexibility",
+                    options: [
+                        { text: "イライラしたり、手が震えるような感覚になる", score: { SPIKE: 1, DEFICIT: 2, OPTIMAL: 0 } },
+                        { text: "すぐにお菓子や軽食を口にしてしまう", score: { SPIKE: 2, DEFICIT: 0, OPTIMAL: 0 } },
+                        { text: "落ち着いて次の食事まで待つことができる", score: { SPIKE: 0, DEFICIT: 0, OPTIMAL: 2 } }
+                    ]
+                },
+                {
+                    text: "入眠のタイミングと、起きた時の感覚は？",
+                    category: "Recovery Quality",
+                    options: [
+                        { text: "スマホを長時間見た後に寝落ちし、朝は身体が重い", score: { SPIKE: 1, DEFICIT: 1, OPTIMAL: 0 } },
+                        { text: "寝つきは悪くないが、夜中に目が覚めることがある", score: { SPIKE: 0, DEFICIT: 1, OPTIMAL: 0 } },
+                        { text: "決まった時間に眠り、朝はアラーム前にスッキリ起きる", score: { SPIKE: 0, DEFICIT: 0, OPTIMAL: 3 } }
+                    ]
+                },
+                {
+                    text: "週に合計何時間、息が少し上がる程度の運動をしていますか？",
+                    category: "Mitochondrial Function",
+                    options: [
+                        { text: "ほとんどしていない（1時間未満）", score: { SPIKE: 1, DEFICIT: 2, OPTIMAL: 0 } },
+                        { text: "週末にまとめて1〜2時間程度行う", score: { SPIKE: 0, DEFICIT: 1, OPTIMAL: 1 } },
+                        { text: "週に3回以上、合計3時間以上行っている", score: { SPIKE: 0, DEFICIT: 0, OPTIMAL: 3 } }
+                    ]
+                }
+            ],
+            results: {
+                SPIKE: {
+                    title: "The Sugar Roller / 血糖値の乱高下",
+                    icon: "trending-down",
+                    desc: "あなたの身体の軸は「糖質」に支配されています。頻繁な血糖値スパイクによってメンタルや集中力が左右されており、これが精神的なブレの原因になっている可能性が高いです。まずは主食を低GI食品（玄米や全粒粉）に変え、食事の最初に野菜を摂ることを徹底しましょう。",
+                    actions: ["ベジタブルファーストの徹底", "精製された砂糖（清涼飲料水等）のカット", "食後15分のウォーキング"],
+                    targetCategory: "FOOD"
+                },
+                DEFICIT: {
+                    title: "The Hollow Shell / 栄養の枯渇",
+                    icon: "battery-low",
+                    desc: "あなたの「軸」を支えるための原材料が圧倒的に不足しています。タンパク質や鉄分、ビタミン類が足りないため、脳が正常にホルモンを生成できず、意欲の低下や不安感に繋がっています。「食べない」ダイエットや適当な食事ではなく、栄養素の『密度』を高める食事が必要です。",
+                    actions: ["毎食手のひら1杯分のタンパク質を摂取", "サプリメントでのミネラル補給検討", "1日1.5L以上の水分補給"],
+                    targetCategory: "FOOD"
+                },
+                OPTIMAL: {
+                    title: "The Bio-Machine / 最適化された個体",
+                    icon: "cpu",
+                    desc: "素晴らしい状態です。あなたは自分の身体を、目的を達成するための精密なマシンとして管理できています。身体の安定が精神の安定を強固に支えています。現在の習慣を維持しつつ、さらにパフォーマンスを上げるための『攻めの栄養学』や『バイオハック』に注力してみてください。",
+                    actions: ["継続的な習慣のモニタリング", "睡眠の質のさらなる追求（寝具・遮光）", "瞑想とフィジカルトレーニングの融合"],
+                    targetCategory: "CORE"
+                }
+            }
+        };
+
+        let currentQ = 0;
+        let totalScores = { SPIKE: 0, DEFICIT: 0, OPTIMAL: 0 };
+
+        function init() {
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = diagnosisData.questions[currentQ];
+            const content = document.getElementById('question-content');
+            
+            document.getElementById('q-category').innerText = `Category: ${q.category}`;
+            document.getElementById('q-step').innerText = `${String(currentQ + 1).padStart(2, '0')} / 05`;
+            document.getElementById('progress').style.width = `${(currentQ + 1) * 20}%`;
+            document.getElementById('q-text').innerText = q.text;
+
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full p-6 text-left border border-slate-100 rounded-[1.5rem] font-bold text-slate-600 transition-all duration-300 flex justify-between items-center group";
+                btn.innerHTML = `<span>${opt.text}</span><i data-lucide="chevron-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all"></i>`;
+                btn.onclick = () => selectOption(opt.score);
+                grid.appendChild(btn);
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+            content.classList.remove('animate-in');
+            void content.offsetWidth;
+            content.classList.add('animate-in');
+        }
+
+        function selectOption(score) {
+            for (let key in score) totalScores[key] += score[key];
+            currentQ++;
+            if (currentQ < diagnosisData.questions.length) {
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('question-screen').classList.add('hidden');
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.classList.remove('hidden');
+
+            const topType = Object.keys(totalScores).reduce((a, b) => totalScores[a] >= totalScores[b] ? a : b);
+            const result = diagnosisData.results[topType];
+
+            document.getElementById('result-title').innerText = result.title;
+            document.getElementById('result-desc').innerText = result.desc;
+            document.getElementById('result-icon').innerHTML = `<i data-lucide="${result.icon}" style="width:40px; height:40px;"></i>`;
+
+            const actionList = document.getElementById('action-list');
+            actionList.innerHTML = result.actions.map(a => `<li class="flex items-start gap-3"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i><span>${a}</span></li>`).join('');
+
+            const recArticle = components.articles.find(a => a.category === result.targetCategory) || components.articles[0];
+            document.getElementById('recommended-card').innerHTML = components.createArticleCard(recArticle);
+
+            if (window.lucide) window.lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
+

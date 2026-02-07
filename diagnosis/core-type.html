@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORE TYPE DIAGNOSIS | Men I Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; color: #1e293b; overflow-x: hidden; }
+        .lucide { stroke-width: 2px; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .option-btn:hover { border-color: #4f46e5; background-color: #f8faff; transform: translateX(8px); }
+        .hidden { display: none; }
+        .progress-bar { transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav id="common-navbar"></nav>
+
+    <main class="flex-grow pt-32 pb-24 px-6 flex items-center justify-center">
+        <div id="diagnosis-app" class="max-w-2xl w-full">
+            
+            <!-- Question Screen -->
+            <div id="question-screen" class="space-y-12">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-end">
+                        <span id="q-category" class="text-[10px] font-black text-indigo-600 tracking-[0.3em] uppercase">Category: Mental</span>
+                        <span id="q-step" class="text-[10px] font-black text-slate-300 tracking-widest uppercase">01 / 05</span>
+                    </div>
+                    <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="progress" class="progress-bar h-full bg-indigo-600" style="width: 20%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-8 animate-in" id="question-content">
+                    <h2 id="q-text" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight">質問内容が読み込まれます。</h2>
+                    <div id="options-grid" class="grid gap-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="hidden space-y-12 animate-in text-center">
+                <div class="space-y-6">
+                    <div class="flex justify-center">
+                        <div id="result-icon" class="w-24 h-24 bg-slate-900 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
+                            <i data-lucide="zap" style="width:40px; height:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-indigo-600 tracking-[0.4em] uppercase">Your Core Status</p>
+                        <h2 id="result-title" class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Result Title</h2>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm space-y-6 text-left">
+                    <div class="prose prose-slate">
+                        <!-- 斜体(italic)を解除 -->
+                        <p id="result-desc" class="text-slate-600 font-medium leading-relaxed">分析結果の詳細テキスト。</p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-50">
+                        <!-- 日本語へ変更 -->
+                        <h4 class="text-[10px] font-black text-slate-900 tracking-widest uppercase mb-4">今日から始めるアクションプラン</h4>
+                        <ul id="action-list" class="space-y-3 text-sm font-bold text-slate-500">
+                            <!-- Action items injected by JS -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase italic">Recommended Insight</p>
+                    <div id="recommended-card" class="max-w-sm mx-auto">
+                        <!-- Article card injected by JS -->
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <button onclick="location.reload()" class="text-[10px] font-black text-slate-300 hover:text-indigo-600 transition-colors uppercase tracking-[0.3em] flex items-center gap-2 mx-auto">
+                        <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+                        Re-Analyze Core
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="common-footer"></footer>
+
+    <script src="../components.js"></script>
+    <script>
+        const diagnosisData = {
+            questions: [
+                {
+                    text: "予期せぬトラブルや批判に直面した際、あなたの最初の反応は？",
+                    category: "Emotional Stability",
+                    options: [
+                        { text: "即座に反論、または過度に落ち込む", score: { CORE: 2, STYLE: 0, FOOD: 0, GUIDE: 0 } },
+                        { text: "一度状況を客観的に分析しようとする", score: { CORE: 0, STYLE: 0, FOOD: 0, GUIDE: 2 } },
+                        { text: "周囲の反応を見て自分の立ち位置を決める", score: { CORE: 1, STYLE: 1, FOOD: 0, GUIDE: 0 } }
+                    ]
+                },
+                {
+                    text: "理想の自分を想像した時、最も欠けていると感じる要素は？",
+                    category: "Self-Identity",
+                    options: [
+                        { text: "周囲を納得させる外見的・社会的説得力", score: { CORE: 0, STYLE: 2, FOOD: 0, GUIDE: 0 } },
+                        { text: "何事にも動じない精神的なタフさ", score: { CORE: 2, STYLE: 0, FOOD: 0, GUIDE: 0 } },
+                        { text: "毎日を規律正しく過ごす自己管理能力", score: { CORE: 0, STYLE: 0, FOOD: 1, GUIDE: 2 } }
+                    ]
+                },
+                {
+                    text: "デジタルデバイスを一切遮断した環境で、1時間過ごすとしたら？",
+                    category: "Solitude Tolerance",
+                    options: [
+                        { text: "退屈や焦燥感を強く感じる", score: { CORE: 2, STYLE: 0, FOOD: 0, GUIDE: 1 } },
+                        { text: "思考が整理され、むしろ心地よい", score: { CORE: 0, STYLE: 0, FOOD: 0, GUIDE: 0 } },
+                        { text: "何をすればいいか戸惑う", score: { CORE: 1, STYLE: 0, FOOD: 0, GUIDE: 0 } }
+                    ]
+                },
+                {
+                    text: "現在のあなたの「食」と「睡眠」の質を客観的に評価すると？",
+                    category: "Physical Foundation",
+                    options: [
+                        { text: "乱れており、常に倦怠感がある", score: { CORE: 0, STYLE: 0, FOOD: 3, GUIDE: 0 } },
+                        { text: "意識はしているが、徹底はできていない", score: { CORE: 0, STYLE: 0, FOOD: 1, GUIDE: 1 } },
+                        { text: "自分のパフォーマンスを最大化するよう管理できている", score: { CORE: 0, STYLE: 0, FOOD: 0, GUIDE: 0 } }
+                    ]
+                },
+                {
+                    text: "成功している知人のニュースを聞いた時、反射的に思うことは？",
+                    category: "Social Comparison",
+                    options: [
+                        { text: "「なぜ自分はあそこにいないのか」という焦燥", score: { CORE: 2, STYLE: 1, FOOD: 0, GUIDE: 0 } },
+                        { text: "「自分は自分の道を歩んでいる」という静かな確信", score: { CORE: 0, STYLE: 0, FOOD: 0, GUIDE: 0 } },
+                        { text: "とりあえず「おめでとう」と言うが、内心は複雑", score: { CORE: 1, STYLE: 0, FOOD: 0, GUIDE: 0 } }
+                    ]
+                }
+            ],
+            results: {
+                CORE: {
+                    title: "The Unshakable / 不動の心",
+                    icon: "shield",
+                    desc: "あなたの現在の課題は「精神的レジリエンス」にあります。外部環境の変化に心が揺さぶられやすく、自己肯定感が他者の評価に依存している可能性があります。まずは『何もしない時間』を意図的に作り、内省の習慣を身につけることが先決です。",
+                    actions: ["1日10分のデジタルデトックス", "価値観を書き出すジャーナリング", "マインドフルネス瞑想の導入"],
+                    targetCategory: "CORE"
+                },
+                STYLE: {
+                    title: "The Visionary / 表現の探求",
+                    icon: "eye",
+                    desc: "あなたは「自分をどう定義し、どう見せるか」というアイデンティティの形成期にあります。外見を整えることは虚栄ではなく、内面を投影する儀式です。自身のスタイルを確立することで、それが盾となり、内面の軸を守るようになります。",
+                    actions: ["自分の定番スタイル（制服化）の決定", "身の回りの持ち物の断捨離", "姿勢を正すトレーニング"],
+                    targetCategory: "STYLE"
+                },
+                FOOD: {
+                    title: "The Foundation / 土台の再建",
+                    icon: "battery-charging",
+                    desc: "精神論を語る前に、物理的な「身体」が悲鳴を上げています。脳のパフォーマンスは腸内環境や睡眠の質に直結します。軸がブレる原因は心ではなく、低血糖や睡眠不足という物理的要因かもしれません。",
+                    actions: ["加工食品を控え、高タンパクな食事へ", "就寝2時間前のブルーライトカット", "朝の太陽光を5分浴びる"],
+                    targetCategory: "FOOD"
+                },
+                GUIDE: {
+                    title: "The Disciplined / 規律の構築",
+                    icon: "target",
+                    desc: "あなたの軸に必要なのは「習慣というシステム」です。意欲やモチベーションに頼るのではなく、仕組みで自分を動かす段階にあります。小さな規律を積み重ねることが、大きな自信（軸）へと繋がります。",
+                    actions: ["ルーティンの固定化", "小さな目標を毎日1つだけ達成する", "TODOリストのデジタル管理"],
+                    targetCategory: "GUIDE"
+                }
+            }
+        };
+
+        let currentQ = 0;
+        let totalScores = { CORE: 0, STYLE: 0, FOOD: 0, GUIDE: 0 };
+
+        function init() {
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = diagnosisData.questions[currentQ];
+            const content = document.getElementById('question-content');
+            
+            // Update UI
+            document.getElementById('q-category').innerText = `Category: ${q.category}`;
+            document.getElementById('q-step').innerText = `${String(currentQ + 1).padStart(2, '0')} / 05`;
+            document.getElementById('progress').style.width = `${(currentQ + 1) * 20}%`;
+            document.getElementById('q-text').innerText = q.text;
+
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full p-6 text-left border border-slate-100 rounded-[1.5rem] font-bold text-slate-600 transition-all duration-300 flex justify-between items-center group";
+                btn.innerHTML = `
+                    <span>${opt.text}</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all"></i>
+                `;
+                btn.onclick = () => selectOption(opt.score);
+                grid.appendChild(btn);
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+            content.classList.remove('animate-in');
+            void content.offsetWidth;
+            content.classList.add('animate-in');
+        }
+
+        function selectOption(score) {
+            for (let key in score) totalScores[key] += score[key];
+            
+            currentQ++;
+            if (currentQ < diagnosisData.questions.length) {
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('question-screen').classList.add('hidden');
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.classList.remove('hidden');
+
+            const topType = Object.keys(totalScores).reduce((a, b) => totalScores[a] >= totalScores[b] ? a : b);
+            const result = diagnosisData.results[topType];
+
+            document.getElementById('result-title').innerText = result.title;
+            document.getElementById('result-desc').innerText = result.desc;
+            document.getElementById('result-icon').innerHTML = `<i data-lucide="${result.icon}" style="width:40px; height:40px;"></i>`;
+
+            const actionList = document.getElementById('action-list');
+            actionList.innerHTML = result.actions.map(a => `
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                    <span>${a}</span>
+                </li>
+            `).join('');
+
+            const recArticle = components.articles.find(a => a.category === result.targetCategory) || components.articles[0];
+            document.getElementById('recommended-card').innerHTML = components.createArticleCard(recArticle, false);
+
+            if (window.lucide) window.lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
+

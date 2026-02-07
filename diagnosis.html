@@ -14,8 +14,8 @@
         .animate-in { animation: fadeIn 0.8s ease-out forwards; }
         
         .diagnosis-card:hover .icon-box { transform: scale(1.1); background-color: #4f46e5; color: white; }
-        /* FOOD診断用のホバー色 */
         .diagnosis-card.food:hover .icon-box { background-color: #10b981; color: white; }
+        .diagnosis-card.style:hover .icon-box { background-color: #f59e0b; color: white; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -34,85 +34,80 @@
                 </div>
                 <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none uppercase">Diagnosis.</h1>
                 <p class="max-w-2xl text-slate-500 font-medium leading-relaxed">
-                    今の自分を知ることが、理想の「軸」を作る第一歩。いくつかの質問に答えるだけで、あなたの状態を可視化し、最適な改善案を導き出します。
+                    今の自分を知ることが、理想の「軸」を作る第一歩。3つの異なる視点からあなたの状態を可視化し、最適な改善案を導き出します。
                 </p>
             </header>
 
             <!-- Diagnosis Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in" style="animation-delay: 0.2s;">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-in" style="animation-delay: 0.2s;">
                 
-                <!-- Card 1: Main Core Diagnosis -->
-                <div onclick="location.href='diagnosis/core-type.html'" class="diagnosis-card group cursor-pointer bg-white border border-slate-100 p-8 md:p-12 rounded-[3rem] hover:shadow-2xl hover:shadow-indigo-600/10 transition-all">
-                    <div class="flex flex-col h-full justify-between gap-12">
-                        <div class="space-y-6">
-                            <div class="icon-box w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 transition-all duration-500">
-                                <i data-lucide="activity" style="width:32px; height:32px;"></i>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="px-3 py-1 bg-indigo-600 text-[10px] font-black text-white rounded-full tracking-widest uppercase">Popular</span>
-                                    <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Time: 1min</span>
-                                </div>
-                                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Core Type Diagnosis</h2>
-                                <p class="text-slate-500 font-medium leading-relaxed">5つの質問で、あなたの現在の「内面の軸」の状態を判定します。今のあなたに最も必要なカテゴリーを特定しましょう。</p>
-                            </div>
+                <!-- Card 1: Core Type Diagnosis -->
+                <div onclick="location.href='diagnosis/core-type.html'" class="diagnosis-card group cursor-pointer bg-white border border-slate-100 p-8 rounded-[3rem] hover:shadow-2xl hover:shadow-indigo-600/10 transition-all flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="icon-box w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 transition-all duration-500">
+                            <i data-lucide="activity" style="width:32px; height:32px;"></i>
                         </div>
-                        <div class="flex items-center gap-2 text-slate-900 font-black text-sm tracking-widest uppercase group-hover:text-indigo-600 transition-colors">
-                            <span>Start Test</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-indigo-600 text-[8px] font-black text-white rounded-full tracking-widest uppercase">Popular</span>
+                            </div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Core Type</h2>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed">内面の軸の状態を判定。あなたの思考の癖や精神的なタフさを知るための基本テストです。</p>
                         </div>
+                    </div>
+                    <div class="mt-8 flex items-center gap-2 text-slate-900 font-black text-xs tracking-widest uppercase group-hover:text-indigo-600 transition-colors">
+                        <span>Start Test</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </div>
                 </div>
 
-                <!-- Card 2: Food & Physical (Updated) -->
-                <div onclick="location.href='diagnosis/food-physical.html'" class="diagnosis-card food group cursor-pointer bg-white border border-slate-100 p-8 md:p-12 rounded-[3rem] hover:shadow-2xl hover:shadow-emerald-600/10 transition-all">
-                    <div class="flex flex-col h-full justify-between gap-12">
-                        <div class="space-y-6">
-                            <div class="icon-box w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 transition-all duration-500">
-                                <i data-lucide="utensils" style="width:32px; height:32px;"></i>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="px-3 py-1 bg-emerald-600 text-[10px] font-black text-white rounded-full tracking-widest uppercase">New</span>
-                                    <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Time: 1min</span>
-                                </div>
-                                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Food & Physical</h2>
-                                <p class="text-slate-500 font-medium leading-relaxed">日々の食事習慣から、あなたの「身体の軸」の乱れをチェック。パフォーマンスを最大化するための具体的なアクションを提案します。</p>
-                            </div>
+                <!-- Card 2: Food & Physical Diagnosis -->
+                <div onclick="location.href='diagnosis/food-physical.html'" class="diagnosis-card food group cursor-pointer bg-white border border-slate-100 p-8 rounded-[3rem] hover:shadow-2xl hover:shadow-emerald-600/10 transition-all flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="icon-box w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 transition-all duration-500">
+                            <i data-lucide="utensils" style="width:32px; height:32px;"></i>
                         </div>
-                        <div class="flex items-center gap-2 text-slate-900 font-black text-sm tracking-widest uppercase group-hover:text-emerald-600 transition-colors">
-                            <span>Start Test</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-emerald-600 text-[8px] font-black text-white rounded-full tracking-widest uppercase">Physical</span>
+                            </div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Food & Body</h2>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed">日々の食事習慣から「身体の軸」をチェック。エネルギー効率を最大化するためのアクションを提案します。</p>
                         </div>
+                    </div>
+                    <div class="mt-8 flex items-center gap-2 text-slate-900 font-black text-xs tracking-widest uppercase group-hover:text-emerald-600 transition-colors">
+                        <span>Start Test</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </div>
                 </div>
 
-                <!-- Card 3: Style & Identity (Coming Soon) -->
-                <div class="bg-slate-50/50 border border-dashed border-slate-200 p-8 md:p-12 rounded-[3rem] relative overflow-hidden group">
-                    <div class="flex flex-col h-full justify-between gap-12 opacity-60">
-                        <div class="space-y-6">
-                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-slate-400 border border-slate-100">
-                                <i data-lucide="shirt" style="width:32px; height:32px;"></i>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Coming Soon</span>
-                                <h2 class="text-3xl font-black text-slate-400 tracking-tight">Style Identity</h2>
-                                <p class="text-slate-400 font-medium leading-relaxed">あなたの外見的な好みを分析し、内面の軸と合致した「自分らしいスタイル」を導き出します。</p>
-                            </div>
+                <!-- Card 3: Style Identity Diagnosis -->
+                <div onclick="location.href='diagnosis/style-identity.html'" class="diagnosis-card style group cursor-pointer bg-white border border-slate-100 p-8 rounded-[3rem] hover:shadow-2xl hover:shadow-amber-600/10 transition-all flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="icon-box w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 transition-all duration-500">
+                            <i data-lucide="shirt" style="width:32px; height:32px;"></i>
                         </div>
-                        <div class="text-slate-300 font-black text-sm tracking-widest uppercase">
-                            Available in Phase 2
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-amber-500 text-[8px] font-black text-white rounded-full tracking-widest uppercase">Identity</span>
+                            </div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Style Identity</h2>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed">装いや自己表現の軸を判定。周囲に与える印象をコントロールし、自分らしさを視覚化する戦略を導きます。</p>
                         </div>
+                    </div>
+                    <div class="mt-8 flex items-center gap-2 text-slate-900 font-black text-xs tracking-widest uppercase group-hover:text-amber-600 transition-colors">
+                        <span>Start Test</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </div>
                 </div>
 
             </div>
-
         </div>
     </main>
 
     <footer id="common-footer"></footer>
 
+    <!-- Scripts -->
     <script src="components.js"></script>
 </body>
 </html>

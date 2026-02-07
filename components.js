@@ -34,14 +34,13 @@ const components = {
     ],
 
     // ==========================================
-    // 記事カードの生成 (HTML構造を完全統一)
+    // 記事カードの生成
     // ==========================================
     createArticleCard(article, isNested = false) {
-        // articles/ フォルダ内にいる場合は、リンクから articles/ を消す
         const linkPath = isNested ? article.link.replace('articles/', '') : article.link;
         
         return `
-            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4 animate-in">
+            <div onclick="location.href='${linkPath}'" class="group cursor-pointer space-y-4">
                 <div class="aspect-[16/10] bg-slate-50 rounded-[2rem] border border-slate-100 relative overflow-hidden">
                     <div class="absolute inset-0 group-hover:bg-indigo-600/5 transition-colors"></div>
                 </div>
@@ -53,9 +52,6 @@ const components = {
         `;
     },
 
-    // ==========================================
-    // ナビゲーション
-    // ==========================================
     initNavbar() {
         const nav = document.getElementById('common-navbar');
         if (!nav) return;
@@ -139,7 +135,7 @@ const components = {
         
         const isNested = window.location.pathname.includes('/articles/');
 
-        // 1. トップページ用の「最新3件」描画
+        // 1. トップページ用の「最新3件」
         const recentContainer = document.getElementById('recent-articles-grid');
         if (recentContainer) {
             recentContainer.innerHTML = this.articles
@@ -148,8 +144,8 @@ const components = {
                 .join('');
         }
 
-        // 2. 記事一覧ページ用の「全件」描画
-        const allArticlesContainer = document.getElementById('articles-grid');
+        // 2. 記事一覧ページ用の描画 (ID名を article-grid に修正)
+        const allArticlesContainer = document.getElementById('article-grid');
         if (allArticlesContainer) {
             allArticlesContainer.innerHTML = this.articles
                 .map(article => this.createArticleCard(article, isNested))

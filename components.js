@@ -106,11 +106,10 @@ const components = {
         const isNested = path.includes('/articles/');
         const prefix = isNested ? '../' : '';
 
-        // リンク設定の修正：ARTICLEの遷移先を articles.html に変更
         const menuLinks = [
             { label: 'HOME', href: prefix + 'index.html', active: path.endsWith('index.html') || path.endsWith('/') },
             { label: 'DIAGNOSIS', href: prefix + 'diagnosis.html', active: path.includes('diagnosis.html') },
-            { label: 'ARTICLE', href: prefix + 'articles.html', active: path.includes('articles.html') },
+            { label: 'ARTICLE', href: prefix + 'index.html#articles', active: false },
             { label: 'CONCEPT', href: prefix + 'concept.html', active: path.includes('concept.html') }
         ];
 

@@ -46,6 +46,15 @@ const components = {
             icon: 'shirt',
             link: 'diagnosis/style-identity.html',
             color: 'amber'
+        },
+        {
+            id: 'focus-productivity',
+            title: 'Focus & Productivity',
+            category: 'Performance',
+            themeColor: 'sky',
+            icon: 'zap',
+            desc: 'あなたの集中力と生産性の現状を分析。脳のリソースを最適化し、高いパフォーマンスを維持するための戦略を導き出します。',
+            link: 'diagnosis/focus-productivity.html'
         }
     ],
 

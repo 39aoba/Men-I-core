@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCUS & PRODUCTIVITY | Men I Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #FDFDFF; color: #1e293b; overflow-x: hidden; }
+        .lucide { stroke-width: 2px; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* 集中力診断用：シアン（sky-500/600）のカラー設定 */
+        .option-btn:hover { border-color: #0ea5e9; background-color: #f0f9ff; transform: translateX(8px); }
+        .hidden { display: none; }
+        .progress-bar { transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav id="common-navbar"></nav>
+
+    <main class="flex-grow pt-32 pb-24 px-6 flex items-center justify-center">
+        <div id="diagnosis-app" class="max-w-2xl w-full">
+            
+            <!-- Question Screen -->
+            <div id="question-screen" class="space-y-12">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-end">
+                        <span id="q-category" class="text-[10px] font-black text-sky-600 tracking-[0.3em] uppercase">Category: Productivity</span>
+                        <span id="q-step" class="text-[10px] font-black text-slate-300 tracking-widest uppercase">01 / 05</span>
+                    </div>
+                    <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="progress" class="progress-bar h-full bg-sky-500" style="width: 20%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-8 animate-in" id="question-content">
+                    <h2 id="q-text" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight">質問内容が読み込まれます。</h2>
+                    <div id="options-grid" class="grid gap-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="hidden space-y-12 animate-in text-center">
+                <div class="space-y-6">
+                    <div class="flex justify-center">
+                        <div id="result-icon" class="w-24 h-24 bg-slate-900 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl">
+                            <i data-lucide="zap" style="width:40px; height:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-sky-600 tracking-[0.4em] uppercase">Focus Analysis</p>
+                        <h2 id="result-title" class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Result Title</h2>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm space-y-6 text-left">
+                    <div class="prose prose-slate">
+                        <p id="result-desc" class="text-slate-600 font-medium leading-relaxed">分析結果の詳細テキスト。</p>
+                    </div>
+                    <div class="pt-6 border-t border-slate-50">
+                        <h4 class="text-[10px] font-black text-slate-900 tracking-widest uppercase mb-4">パフォーマンス向上のためのアクション</h4>
+                        <ul id="action-list" class="space-y-3 text-sm font-bold text-slate-500">
+                            <!-- Action items injected by JS -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase italic">Recommended Insight</p>
+                    <div id="recommended-card" class="max-w-sm mx-auto">
+                        <!-- Article card injected by JS -->
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <button onclick="location.reload()" class="text-[10px] font-black text-slate-300 hover:text-sky-600 transition-colors uppercase tracking-[0.3em] flex items-center gap-2 mx-auto">
+                        <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+                        Restart Diagnosis
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="common-footer"></footer>
+
+    <script src="../components.js"></script>
+    <script>
+        const diagnosisData = {
+            questions: [
+                {
+                    text: "作業を開始する際、あなたのデスク周りの状態は？",
+                    category: "Environment",
+                    options: [
+                        { text: "必要なものだけが整理されている", score: { HIGH: 2, MID: 0, LOW: 0 } },
+                        { text: "多少散らかっているが、どこに何があるか分かる", score: { HIGH: 0, MID: 2, LOW: 0 } },
+                        { text: "書類や小物で溢れ、探し物から始まる", score: { HIGH: 0, MID: 0, LOW: 2 } }
+                    ]
+                },
+                {
+                    text: "スマートフォンからの通知が来た時、どう対応しますか？",
+                    category: "Distraction",
+                    options: [
+                        { text: "即座にチェックして返信する", score: { HIGH: 0, MID: 0, LOW: 2 } },
+                        { text: "一区切りつくまで無視する", score: { HIGH: 2, MID: 0, LOW: 0 } },
+                        { text: "気になって作業の手が止まってしまう", score: { HIGH: 0, MID: 1, LOW: 1 } }
+                    ]
+                },
+                {
+                    text: "午前中の最もエネルギーが高い時間をどう使っていますか？",
+                    category: "Prioritization",
+                    options: [
+                        { text: "最も重要で重いタスクに充てる", score: { HIGH: 2, MID: 0, LOW: 0 } },
+                        { text: "メール返信など軽いタスクからこなす", score: { HIGH: 0, MID: 1, LOW: 1 } },
+                        { text: "その時の気分で決める", score: { HIGH: 0, MID: 0, LOW: 2 } }
+                    ]
+                },
+                {
+                    text: "作業中の休憩の取り方は？",
+                    category: "Recovery",
+                    options: [
+                        { text: "疲れるまで（数時間）ぶっ続けで行う", score: { HIGH: 0, MID: 1, LOW: 1 } },
+                        { text: "時間を決めて定期的に脳を休ませる", score: { HIGH: 2, MID: 0, LOW: 0 } },
+                        { text: "集中が切れたらズルズルとスマホを見る", score: { HIGH: 0, MID: 0, LOW: 2 } }
+                    ]
+                },
+                {
+                    text: "「今日やるべきこと」をどの程度明確にしていますか？",
+                    category: "Planning",
+                    options: [
+                        { text: "前日か朝にリスト化して優先順位をつけている", score: { HIGH: 2, MID: 0, LOW: 0 } },
+                        { text: "頭の中でなんとなく考えている", score: { HIGH: 0, MID: 2, LOW: 0 } },
+                        { text: "振られた仕事から順に対応している", score: { HIGH: 0, MID: 0, LOW: 2 } }
+                    ]
+                }
+            ],
+            results: {
+                HIGH: {
+                    title: "Deep Focused",
+                    icon: "target",
+                    desc: "あなたの集中力は極めて高い状態です。自分のリズムを把握し、環境をコントロールできています。今のフロー状態を維持するための高度な習慣化を提案します。",
+                    actions: ["ディープワークの時間をカレンダーに固定する", "さらに高い目標設定（クォーター目標）を行う", "メンタルタフネスを維持する瞑想の導入"],
+                    targetCategory: "GUIDE"
+                },
+                MID: {
+                    title: "Potential Worker",
+                    icon: "zap",
+                    desc: "集中する力は持っていますが、外部要因や体調によってムラが出やすい状態です。環境を整え、仕組み化することでパフォーマンスが劇的に向上します。",
+                    actions: ["デスクの「視界」に入る情報を減らす", "ポモドーロ・テクニック（25分集中）を導入", "朝の優先順位付けを10分間行う"],
+                    targetCategory: "CORE"
+                },
+                LOW: {
+                    title: "Noise Cloud",
+                    icon: "cloud",
+                    desc: "脳が常に「ノイズ」にさらされ、エネルギーが分散してしまっています。まずはタスクの整理よりも、脳を休ませ、情報を遮断することから始めましょう。",
+                    actions: ["通知をすべてオフにする時間を設ける", "睡眠と食事のリズムを整える", "やることを1つだけに絞る練習をする"],
+                    targetCategory: "FOOD"
+                }
+            }
+        };
+
+        let currentStep = 0;
+        let totalScores = { HIGH: 0, MID: 0, LOW: 0 };
+
+        function init() {
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = diagnosisData.questions[currentStep];
+            document.getElementById('q-category').innerText = `Category: ${q.category}`;
+            document.getElementById('q-step').innerText = `${String(currentStep + 1).padStart(2, '0')} / ${String(diagnosisData.questions.length).padStart(2, '0')}`;
+            document.getElementById('q-text').innerText = q.text;
+            
+            const progress = ((currentStep + 1) / diagnosisData.questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-6 bg-white border border-slate-100 rounded-2xl font-bold text-slate-700 transition-all duration-300 flex items-center justify-between group";
+                btn.innerHTML = `
+                    <span>${opt.text}</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-sky-600 transition-colors"></i>
+                `;
+                btn.onclick = () => handleAnswer(opt.score);
+                optionsGrid.appendChild(btn);
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function handleAnswer(score) {
+            for (let key in score) {
+                totalScores[key] += score[key];
+            }
+
+            if (currentStep < diagnosisData.questions.length - 1) {
+                currentStep++;
+                const content = document.getElementById('question-content');
+                content.style.opacity = '0';
+                content.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    renderQuestion();
+                    content.style.opacity = '1';
+                    content.style.transform = 'translateY(0)';
+                }, 300);
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('question-screen').classList.add('hidden');
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.classList.remove('hidden');
+
+            const topType = Object.keys(totalScores).reduce((a, b) => totalScores[a] >= totalScores[b] ? a : b);
+            const result = diagnosisData.results[topType];
+
+            document.getElementById('result-title').innerText = result.title;
+            document.getElementById('result-desc').innerText = result.desc;
+            document.getElementById('result-icon').innerHTML = `<i data-lucide="${result.icon}" style="width:40px; height:40px;"></i>`;
+
+            const actionList = document.getElementById('action-list');
+            actionList.innerHTML = result.actions.map(a => `
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-600 shrink-0"></i>
+                    <span>${a}</span>
+                </li>
+            `).join('');
+
+            // components.js から記事を取得
+            if (window.components) {
+                const recArticle = components.articles.find(a => a.category === result.targetCategory) || components.articles[0];
+                document.getElementById('recommended-card').innerHTML = components.createArticleCard(recArticle);
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

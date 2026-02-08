@@ -17,11 +17,43 @@ const components = {
     ],
 
     // ==========================================
+    // 診断データベース（ここに追加するだけで一覧に反映）
+    // ==========================================
+    diagnosisList: [
+        {
+            id: 'core-type',
+            title: 'Core Type',
+            category: 'Popular',
+            desc: '内面の軸の状態を判定。あなたの思考の癖や精神的なタフさを知るための基本テストです。',
+            icon: 'activity',
+            link: 'diagnosis/core-type.html',
+            color: 'indigo'
+        },
+        {
+            id: 'food-body',
+            title: 'Food & Body',
+            category: 'Physical',
+            desc: '日々の食事習慣から「身体の軸」をチェック。エネルギー効率を最大化するためのアクションを提案します。',
+            icon: 'utensils',
+            link: 'diagnosis/food-physical.html',
+            color: 'emerald'
+        },
+        {
+            id: 'style-identity',
+            title: 'Style Identity',
+            category: 'Identity',
+            desc: '装いや自己表現の軸を判定。周囲に与える印象をコントロールし、自分らしさを視覚化する戦略を導きます。',
+            icon: 'shirt',
+            link: 'diagnosis/style-identity.html',
+            color: 'amber'
+        }
+    ],
+
+    // ==========================================
     // パス解決ユーティリティ (階層対策)
     // ==========================================
     getBasePath() {
         const path = window.location.pathname;
-        // 階層が深い場合に ../ を追加する
         if (path.includes('/articles/') || path.includes('/diagnosis/')) {
             return '../';
         }
@@ -29,11 +61,46 @@ const components = {
     },
 
     // ==========================================
+    // 診断カードの生成
+    // ==========================================
+    createDiagnosisCard(diag) {
+        const prefix = this.getBasePath();
+        const finalLink = prefix + diag.link;
+        
+        const colorClasses = {
+            indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', badge: 'bg-indigo-600', shadow: 'hover:shadow-indigo-600/10' },
+            emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', badge: 'bg-emerald-600', shadow: 'hover:shadow-emerald-600/10' },
+            amber: { bg: 'bg-amber-50', text: 'text-amber-600', badge: 'bg-amber-500', shadow: 'hover:shadow-amber-600/10' }
+        };
+        const c = colorClasses[diag.color] || colorClasses.indigo;
+
+        return `
+            <div onclick="location.href='${finalLink}'" class="diagnosis-card group cursor-pointer bg-white border border-slate-100 p-8 rounded-[3rem] ${c.shadow} transition-all flex flex-col justify-between animate-in">
+                <div class="space-y-6">
+                    <div class="icon-box w-16 h-16 ${c.bg} rounded-2xl flex items-center justify-center ${c.text} transition-all duration-500">
+                        <i data-lucide="${diag.icon}" style="width:32px; height:32px;"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 ${c.badge} text-[8px] font-black text-white rounded-full tracking-widest uppercase">${diag.category}</span>
+                        </div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">${diag.title}</h2>
+                        <p class="text-sm text-slate-500 font-medium leading-relaxed">${diag.desc}</p>
+                    </div>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-slate-900 font-black text-xs tracking-widest uppercase group-hover:${c.text} transition-colors">
+                    <span>Start Test</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </div>
+            </div>
+        `;
+    },
+
+    // ==========================================
     // 記事カードの生成
     // ==========================================
-    createArticleCard(article, isNested = false) {
+    createArticleCard(article) {
         const prefix = this.getBasePath();
-        // リンクの先頭に適切なプレフィックスを付与
         const cleanLink = article.link.startsWith('articles/') ? article.link : 'articles/' + article.link;
         const finalLink = prefix + cleanLink;
         
@@ -51,7 +118,7 @@ const components = {
     },
 
     // ==========================================
-    // UIコンポーネント
+    // UIコンポーネント初期化
     // ==========================================
     initNavbar() {
         const nav = document.getElementById('common-navbar');
@@ -125,7 +192,7 @@ const components = {
     },
 
     // ==========================================
-    // 記事描画エンジン
+    // 描画エンジン（記事 & 診断）
     // ==========================================
     renderArticles() {
         const recentContainer = document.getElementById('recent-articles-grid');
@@ -167,8 +234,15 @@ const components = {
                 }
             }
         }
+    },
 
-        if (window.lucide) window.lucide.createIcons();
+    renderDiagnosis() {
+        const diagContainer = document.getElementById('diagnosis-grid');
+        if (diagContainer) {
+            diagContainer.innerHTML = this.diagnosisList
+                .map(diag => this.createDiagnosisCard(diag))
+                .join('');
+        }
     },
 
     filterArticles(category) {
@@ -187,8 +261,9 @@ const components = {
         this.initMobileMenu();
         this.initFooter();
         this.renderArticles();
+        this.renderDiagnosis(); // 診断リストの描画を追加
+        if (window.lucide) window.lucide.createIcons();
     }
 };
 
 window.addEventListener('DOMContentLoaded', () => components.render());
-

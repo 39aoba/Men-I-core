@@ -10,129 +10,135 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
         body { font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; background-color: #FDFDFF; margin: 0; }
         .lucide { stroke-width: 2px; display: inline-block; vertical-align: middle; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-in { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        .hero-gradient {
-            background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.05) 0%, rgba(253, 253, 255, 1) 100%);
-        }
-
-        /* 記事カードのホバーアニメーション */
-        .article-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .article-card:hover { transform: translateY(-8px); }
+        .hero-gradient { background: radial-gradient(circle at 50% 50%, #f8faff 0%, #ffffff 100%); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- 共通ヘッダー挿入ポイント (components.js) -->
+    <!-- 共通ヘッダー（components.jsにより挿入） -->
     <nav id="common-navbar"></nav>
 
     <main class="flex-grow">
         <!-- Hero Section -->
-        <section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-6 hero-gradient overflow-hidden">
-            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+        <section class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 hero-gradient overflow-hidden">
+            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#4f46e5 1px, transparent 1px); background-size: 40px 40px;"></div>
             
-            <div class="max-w-5xl mx-auto text-center space-y-8 relative z-10 animate-in">
-                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white border border-slate-100 shadow-sm mb-4">
+            <div class="max-w-5xl mx-auto text-center space-y-12 relative z-10 animate-in">
+                <div class="inline-flex items-center gap-3 px-6 py-2 bg-white border border-slate-100 rounded-full shadow-sm">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
                     </span>
-                    <span class="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">New Era of Men's Standard</span>
+                    <span class="text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase leading-none">Stay Focused On Your Core</span>
                 </div>
                 
                 <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase italic">
-                    Build Your <br>
-                    <span class="text-indigo-600">Core.</span>
+                    Build Your<br>
+                    <span class="text-indigo-600">Own Core.</span>
                 </h1>
                 
-                <p class="max-w-xl mx-auto text-slate-500 font-medium leading-relaxed text-lg">
-                    情報の海に流されず、自分という「軸」を持つ。本当の清潔感と自信は、日々の小さな選択の積み重ねから生まれる。
+                <p class="max-w-2xl mx-auto text-slate-500 text-lg font-medium leading-relaxed">
+                    情報の海に流されず、自分を見失わないために。<br class="hidden md:block">
+                    本質的な自分磨きを通じて、揺るぎない選択の基準を確立する。
                 </p>
-            </div>
 
-            <!-- Scroll Indicator -->
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-                <i data-lucide="chevron-down" class="text-slate-300 w-6 h-6"></i>
+                <div class="flex flex-wrap justify-center gap-6 pt-6">
+                    <a href="diagnosis.html" class="px-12 py-5 bg-slate-900 text-white rounded-full font-black text-xs tracking-[0.2em] hover:bg-indigo-600 transition-all shadow-2xl shadow-slate-900/20 uppercase italic">
+                        Start Diagnosis
+                    </a>
+                    <a href="concept.html" class="px-12 py-5 bg-white border border-slate-100 text-slate-900 rounded-full font-black text-xs tracking-[0.2em] hover:border-indigo-600 transition-all uppercase italic">
+                        Our Philosophy
+                    </a>
+                </div>
             </div>
-        </section>
-
-        <!-- Features Grid -->
-        <section class="py-24 px-6 bg-white">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div class="space-y-6 p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-100 transition-colors group">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                        <i data-lucide="target" class="text-indigo-600 w-5 h-5"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tight">01. Precision</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed font-medium">
-                        「なんとなく」を卒業する。データと論理に基づき、あなたに最適なケアとスタイルを導き出します。
-                    </p>
-                </div>
-                <div class="space-y-6 p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-100 transition-colors group">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                        <i data-lucide="zap" class="text-indigo-600 w-5 h-5"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tight">02. Essential</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed font-medium">
-                        過剰なケアは不要。本質を見極め、最小限の努力で最大限の効果を発揮する「軸」を提案します。
-                    </p>
-                </div>
-                <div class="space-y-6 p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-100 transition-colors group">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                        <i data-lucide="compass" class="text-indigo-600 w-5 h-5"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tight">03. Identity</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed font-medium">
-                        トレンドを追うのではなく、自分に合うものを知る。それが揺るぎない自信と知性に繋がります。
-                    </p>
-                </div>
+            
+            <!-- スクロールを促す矢印アイコン（中央配置修正済み） -->
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 animate-bounce opacity-20 pointer-events-none">
+                <i data-lucide="chevron-down" class="w-6 h-6 text-slate-900"></i>
             </div>
         </section>
 
-        <!-- Editorial Section -->
-        <section id="articles" class="py-24 px-6 bg-white border-t border-slate-50">
+        <!-- Features Summary Section (concept.htmlの内容と統合) -->
+        <section class="py-32 px-6 bg-white">
             <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-baseline mb-12 border-b border-slate-50 pb-6">
-                    <div class="space-y-1">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase italic">Editorial.</h2>
-                        <p class="text-xs font-bold text-slate-400 tracking-[0.2em] uppercase">Latest Knowledge</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
+                    <!-- Precision -->
+                    <div class="space-y-6">
+                        <div class="text-slate-900 font-black text-4xl italic tracking-tighter uppercase leading-none">
+                            01.<br><span class="text-indigo-600">Precision</span>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            「なんとなく」の改善ではなく、データに基づいた精密な自己分析を。あなたの現在のコンディションを高い解像度で可視化します。
+                        </p>
                     </div>
-                    <a href="articles.html" class="text-[10px] font-black text-indigo-600 tracking-widest uppercase hover:translate-x-1 transition-transform inline-flex items-center gap-2">
-                        View All <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    <!-- Essential -->
+                    <div class="space-y-6">
+                        <div class="text-slate-900 font-black text-4xl italic tracking-tighter uppercase leading-none">
+                            02.<br><span class="text-indigo-600">Essential</span>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            表面的な流行に流されず、身体・思考・習慣の「本質」を。本当に自分に必要なものだけを選択する、合理的な強さを養います。
+                        </p>
+                    </div>
+                    <!-- Identity -->
+                    <div class="space-y-6">
+                        <div class="text-slate-900 font-black text-4xl italic tracking-tighter uppercase leading-none">
+                            03.<br><span class="text-indigo-600">Identity</span>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            磨き上げた軸こそが、あなたの唯一無二のアイデンティティとなります。揺るぎない自信と共に、新しい自分への一歩を。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Articles Section -->
+        <section id="articles" class="py-32 px-6 bg-slate-50/50 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto space-y-16">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-slate-200 pb-12">
+                    <div class="space-y-4">
+                        <span class="text-indigo-600 font-black text-xs tracking-[0.4em] uppercase">Latest Knowledge</span>
+                        <h2 class="text-5xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">Editorial.</h2>
+                    </div>
+                    <a href="articles.html" class="group flex items-center gap-3 text-xs font-black tracking-widest text-slate-400 hover:text-indigo-600 transition-all uppercase italic">
+                        View All Articles <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
                 
-                <!-- ここが修正ポイント：IDを recent-articles に変更 -->
-                <div id="recent-articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                    <!-- components.js により記事カードが自動生成されます -->
+                <!-- JSにより最新の3件が自動挿入されるエリア -->
+                <div id="recent-articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                 </div>
             </div>
         </section>
 
-        <!-- Diagnosis Banner -->
-        <section class="py-24 px-6 bg-slate-900 overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-600/20 blur-[100px] -mr-48 -mt-48 rounded-full"></div>
-            <div class="max-w-5xl mx-auto text-center space-y-10 relative z-10">
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
-                    Ready to find <br>your Core?
+        <!-- CTA Section -->
+        <section class="py-32 px-6">
+            <div class="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 md:p-24 text-center space-y-10 relative overflow-hidden shadow-2xl shadow-indigo-200">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 blur-[100px] rounded-full"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
+                
+                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.1] uppercase italic relative z-10">
+                    Ready to build<br>your core?
                 </h2>
-                <p class="text-slate-400 font-medium max-w-lg mx-auto leading-relaxed">
-                    最短ルートで理想の自分へ。まずは3分間の診断で、あなたの現状を可視化しましょう。
+                <p class="text-slate-400 font-medium max-w-lg mx-auto relative z-10">
+                    他人の基準で生きるのはもう終わり。自分だけの価値観を確立するための診断を、今すぐ始めましょう。
                 </p>
-                <div class="pt-4">
-                    <a href="diagnosis.html" class="inline-flex items-center gap-4 px-12 py-6 bg-indigo-600 text-white rounded-full font-black text-xs tracking-[0.2em] hover:bg-indigo-500 transition-all shadow-2xl shadow-indigo-600/20 uppercase">
-                        Start Now <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <div class="pt-6 relative z-10">
+                    <a href="diagnosis.html" class="inline-flex items-center gap-4 px-12 py-5 bg-white text-slate-900 rounded-full font-black text-xs tracking-[0.2em] hover:bg-indigo-50 transition-all uppercase italic">
+                        Take the test <i data-lucide="sparkles" class="w-4 h-4 text-indigo-600"></i>
                     </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 共通フッター挿入ポイント (components.js) -->
+    <!-- 共通フッター（components.jsにより挿入） -->
     <footer id="common-footer"></footer>
 
+    <!-- スクリプトの読み込み -->
     <script src="components.js"></script>
 </body>
 </html>

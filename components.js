@@ -40,7 +40,7 @@ const components = {
     },
 
     // ==========================================
-    // ナビゲーション生成
+    // ナビゲーション生成 (修正版)
     // ==========================================
     initNavbar() {
         const nav = document.getElementById('common-navbar');
@@ -53,22 +53,22 @@ const components = {
                     Men I <span class="text-indigo-600">Core</span>
                 </a>
                 
-                <div class="hidden md:flex items-center gap-12">
+                <!-- ナビゲーションを右側に配置 -->
+                <div class="hidden md:flex items-center gap-12 ml-auto pr-8">
                     <a href="${this.getPath('concept.html')}" class="text-[10px] font-black tracking-[0.3em] text-slate-400 hover:text-indigo-600 transition-colors uppercase italic">Concept</a>
                     <a href="${this.getPath('diagnosis.html')}" class="text-[10px] font-black tracking-[0.3em] text-slate-400 hover:text-indigo-600 transition-colors uppercase italic">Diagnosis</a>
                     <a href="${this.getPath('articles.html')}" class="text-[10px] font-black tracking-[0.3em] text-slate-400 hover:text-indigo-600 transition-colors uppercase italic">Editorial</a>
                 </div>
 
-                <div class="flex items-center gap-6">
-                    <button id="mobile-menu-btn" class="md:hidden text-slate-900">
+                <div class="flex items-center">
+                    <button id="mobile-menu-btn" class="md:hidden text-slate-900 p-2">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
-                    <a href="${this.getPath('diagnosis.html')}" class="hidden md:block px-6 py-2 bg-slate-900 text-white rounded-full text-[10px] font-black tracking-[0.2em] hover:bg-indigo-600 transition-all uppercase italic">
-                        Get Started
-                    </a>
                 </div>
             </div>
-            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 p-6 flex flex-col gap-6">
+            
+            <!-- Mobile Menu (クリックで表示・非表示を切り替え) -->
+            <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-white border-b border-slate-100 p-8 flex flex-col gap-8 shadow-xl">
                 <a href="${this.getPath('concept.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Concept</a>
                 <a href="${this.getPath('diagnosis.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Diagnosis</a>
                 <a href="${this.getPath('articles.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Editorial</a>
@@ -80,12 +80,20 @@ const components = {
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         if (btn && menu) {
-            btn.onclick = () => menu.classList.toggle('hidden');
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                menu.classList.toggle('hidden');
+            };
+            // メニュー以外をクリックした時に閉じる
+            document.addEventListener('click', () => {
+                if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+            });
+            menu.onclick = (e) => e.stopPropagation();
         }
     },
 
     // ==========================================
-    // フッター生成 (元のリッチなデザインを復元)
+    // フッター生成 (デザイン固定)
     // ==========================================
     initFooter() {
         const footer = document.getElementById('common-footer');
@@ -139,17 +147,13 @@ const components = {
     },
 
     // ==========================================
-    // 描画ロジック
+    // 描画ロジック (トップページと一覧ページ両対応)
     // ==========================================
     renderArticles() {
         const gridContainer = document.getElementById('article-grid');
-        if (!gridContainer) return;
-        
-        const filtered = this.currentCategory === 'ALL' 
-            ? this.articles 
-            : this.articles.filter(a => a.category === this.currentCategory);
+        const recentContainer = document.getElementById('recent-articles');
 
-        gridContainer.innerHTML = filtered.slice(0, this.displayLimit).map(art => `
+        const renderHtml = (list) => list.map(art => `
             <article class="group space-y-6 animate-in">
                 <a href="${this.getPath(art.link)}" class="block aspect-[16/10] bg-slate-100 rounded-[2rem] overflow-hidden relative shadow-sm hover:shadow-2xl transition-all duration-500">
                     <div class="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300 opacity-50"></div>
@@ -157,7 +161,7 @@ const components = {
                         <span class="text-[10px] font-black tracking-widest text-indigo-600 uppercase">${art.category}</span>
                     </div>
                 </a>
-                <div class="space-y-4 px-2">
+                <div class="space-y-4 px-2 text-left">
                     <time class="text-[10px] font-black text-slate-300 tracking-widest uppercase">${art.date}</time>
                     <h3 class="text-xl font-black text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
                         <a href="${this.getPath(art.link)}">${art.title}</a>
@@ -166,8 +170,19 @@ const components = {
             </article>
         `).join('');
 
-        // カテゴリボタンの視覚的状態を更新
-        this.updateFilterButtons();
+        // index.html用の「最新記事3つ」
+        if (recentContainer) {
+            recentContainer.innerHTML = renderHtml(this.articles.slice(0, 3));
+        }
+
+        // articles.html用の「記事一覧」
+        if (gridContainer) {
+            const filtered = this.currentCategory === 'ALL' 
+                ? this.articles 
+                : this.articles.filter(a => a.category === this.currentCategory);
+            gridContainer.innerHTML = renderHtml(filtered.slice(0, this.displayLimit));
+            this.updateFilterButtons();
+        }
     },
 
     updateFilterButtons() {
@@ -194,7 +209,7 @@ const components = {
         };
 
         diagContainer.innerHTML = this.diagnosisList.map(diag => `
-            <a href="${this.getPath(diag.link)}" class="diagnosis-card group p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:border-indigo-600 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-50 flex flex-col justify-between min-h-[320px]">
+            <a href="${this.getPath(diag.link)}" class="diagnosis-card group p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:border-indigo-600 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-50 flex flex-col justify-between min-h-[320px] text-left">
                 <div class="space-y-8">
                     <div class="flex justify-between items-start">
                         <div class="icon-box w-14 h-14 ${colorClasses[diag.color] || colorClasses.indigo} rounded-2xl flex items-center justify-center transition-transform">

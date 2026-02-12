@@ -84,25 +84,55 @@ const components = {
         }
     },
 
+    // ==========================================
+    // フッター生成 (元のリッチなデザインを復元)
+    // ==========================================
     initFooter() {
         const footer = document.getElementById('common-footer');
         if (!footer) return;
 
-        footer.className = "bg-white border-t border-slate-100 pt-24 pb-12 px-6";
+        footer.className = "bg-slate-900 pt-24 pb-12 px-6";
         footer.innerHTML = `
-            <div class="max-w-7xl mx-auto text-center md:text-left">
+            <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-                    <div class="col-span-1 md:col-span-2 space-y-8 text-left">
-                        <a href="${this.getPath('index.html')}" class="text-2xl font-black text-slate-900 tracking-tighter uppercase italic">
-                            Men I <span class="text-indigo-600">Core</span>
+                    <div class="col-span-1 md:col-span-2 space-y-8">
+                        <a href="${this.getPath('index.html')}" class="text-2xl font-black text-white tracking-tighter uppercase italic">
+                            Men I <span class="text-indigo-500">Core</span>
                         </a>
                         <p class="max-w-sm text-slate-400 text-sm leading-relaxed font-medium">
                             自分という軸を創るための、メンズセルフケア・プラットフォーム。
+                            本質的な情報と診断を通じて、揺るぎない自信を。
                         </p>
+                        <div class="flex gap-6">
+                            <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                            <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <h4 class="text-[10px] font-black tracking-[0.3em] text-white uppercase italic">Navigation</h4>
+                        <ul class="space-y-4">
+                            <li><a href="${this.getPath('concept.html')}" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">Concept</a></li>
+                            <li><a href="${this.getPath('diagnosis.html')}" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">Diagnosis</a></li>
+                            <li><a href="${this.getPath('articles.html')}" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">Editorial</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-8">
+                        <h4 class="text-[10px] font-black tracking-[0.3em] text-white uppercase italic">Contact</h4>
+                        <ul class="space-y-4">
+                            <li><a href="#" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">About Us</a></li>
+                            <li><a href="#" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">Terms of Service</a></li>
+                            <li><a href="#" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors font-medium">Privacy Policy</a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-slate-50 gap-6">
-                    <p class="text-[10px] font-bold text-slate-300 tracking-[0.2em] uppercase">© 2025 Men I Core. All rights reserved.</p>
+                
+                <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 gap-6">
+                    <p class="text-[10px] font-bold text-slate-600 tracking-[0.2em] uppercase">© 2025 Men I Core. All rights reserved.</p>
+                    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-[10px] font-black text-white tracking-[0.2em] uppercase italic flex items-center gap-2 hover:text-indigo-400 transition-colors">
+                        Back to Top <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                    </button>
                 </div>
             </div>
         `;
@@ -136,20 +166,17 @@ const components = {
             </article>
         `).join('');
 
-        // カテゴリボタンの視覚的状態を更新（ここが重要！）
+        // カテゴリボタンの視覚的状態を更新
         this.updateFilterButtons();
     },
 
-    // ボタンの状態を更新する関数
     updateFilterButtons() {
         const buttons = document.querySelectorAll('.category-btn');
         buttons.forEach(btn => {
             const category = btn.getAttribute('data-category');
             if (category === this.currentCategory) {
-                // アクティブ状態のスタイル
-                btn.className = "category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-indigo-600 text-white border border-indigo-600";
+                btn.className = "category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-indigo-600 text-white border border-indigo-600 shadow-lg shadow-indigo-100";
             } else {
-                // 通常状態のスタイル
                 btn.className = "category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600";
             }
         });
@@ -179,6 +206,9 @@ const components = {
                         <h3 class="text-2xl font-black text-slate-900 tracking-tight uppercase italic">${diag.title}</h3>
                         <p class="text-slate-400 text-sm font-medium leading-relaxed">${diag.desc}</p>
                     </div>
+                </div>
+                <div class="pt-4 flex items-center gap-2 text-indigo-600 font-black text-[10px] tracking-[0.2em] uppercase">
+                    Start Test <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </a>
         `).join('');

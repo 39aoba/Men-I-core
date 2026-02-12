@@ -3,61 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDITORIALS | Men I Core</title>
+    <title>EDITORIAL | Men I Core</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
         body { font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; background-color: #FDFDFF; margin: 0; }
         .lucide { stroke-width: 2px; display: inline-block; vertical-align: middle; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-in { animation: fadeIn 0.8s ease-out forwards; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-in { 
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+
+        /* 記事カードのホバーエフェクト補完 */
+        .group:hover img, .group:hover .bg-gradient-to-br {
+            transform: scale(1.05);
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- 共通ナビゲーション (components.jsで挿入) -->
+    <!-- 共通ナビゲーション（components.jsにより挿入） -->
     <nav id="common-navbar"></nav>
 
-    <main class="flex-grow pt-32 pb-24 px-6">
-        <div class="max-w-7xl mx-auto space-y-16">
+    <main class="flex-grow pt-40 pb-32 px-6">
+        <div class="max-w-7xl mx-auto space-y-24">
             
-            <!-- ページヘッダー -->
-            <header class="space-y-6 animate-in">
-                <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs tracking-[0.4em] uppercase">
+            <!-- Header Section -->
+            <header class="space-y-8 animate-in">
+                <div class="flex items-center gap-3 text-indigo-600 font-black text-[10px] tracking-[0.5em] uppercase italic">
                     <i data-lucide="book-open" style="width:14px; height:14px;"></i>
-                    <span>Knowledge & Insight</span>
+                    <span>Curated Knowledge</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none uppercase">Editorials.</h1>
+                <div class="space-y-4">
+                    <h1 class="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-none uppercase italic">
+                        Editorial<span class="text-indigo-600">.</span>
+                    </h1>
+                    <p class="max-w-2xl text-slate-400 font-medium leading-relaxed text-lg">
+                        「自分という軸」を創るための、本質的な知見。最新のトレンドに流されず、あなたのコアを強化するためのガイドを厳選してお届けします。
+                    </p>
+                </div>
             </header>
 
-            <!-- カテゴリーフィルタ -->
+            <!-- Filtering Navigation -->
             <nav class="flex flex-wrap gap-3 animate-in" style="animation-delay: 0.1s;">
-                <button onclick="components.filterArticles('ALL')" data-category="ALL" class="category-btn px-8 py-3 rounded-full bg-indigo-600 text-white text-xs font-black tracking-widest transition-all shadow-lg shadow-indigo-600/20">ALL</button>
-                <button onclick="components.filterArticles('CORE')" data-category="CORE" class="category-btn px-8 py-3 rounded-full bg-white border border-slate-100 text-xs font-black tracking-widest text-slate-600 hover:border-indigo-600 transition-all">CORE</button>
-                <button onclick="components.filterArticles('STYLE')" data-category="STYLE" class="category-btn px-8 py-3 rounded-full bg-white border border-slate-100 text-xs font-black tracking-widest text-slate-600 hover:border-indigo-600 transition-all">STYLE</button>
-                <button onclick="components.filterArticles('FOOD')" data-category="FOOD" class="category-btn px-8 py-3 rounded-full bg-white border border-slate-100 text-xs font-black tracking-widest text-slate-600 hover:border-indigo-600 transition-all">FOOD</button>
-                <button onclick="components.filterArticles('GUIDE')" data-category="GUIDE" class="category-btn px-8 py-3 rounded-full bg-white border border-slate-100 text-xs font-black tracking-widest text-slate-600 hover:border-indigo-600 transition-all">GUIDE</button>
+                <button onclick="components.filterArticles('ALL')" data-category="ALL" class="category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-slate-900 text-white shadow-xl shadow-slate-200">
+                    All Posts
+                </button>
+                <button onclick="components.filterArticles('CORE')" data-category="CORE" class="category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600">
+                    Core
+                </button>
+                <button onclick="components.filterArticles('STYLE')" data-category="STYLE" class="category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600">
+                    Style
+                </button>
+                <button onclick="components.filterArticles('FOOD')" data-category="FOOD" class="category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600">
+                    Food
+                </button>
+                <button onclick="components.filterArticles('GUIDE')" data-category="GUIDE" class="category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600">
+                    Guide
+                </button>
             </nav>
 
-            <!-- 記事グリッド本体 -->
-            <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 animate-in" style="animation-delay: 0.2s;">
-                <!-- JavaScriptにより生成 -->
+            <!-- Article Grid (JSにより生成) -->
+            <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 animate-in" style="animation-delay: 0.2s;">
+                <!-- content generated by components.js -->
             </div>
 
-            <!-- もっと見るボタンの器 -->
-            <div id="more-button-container" class="mt-20 flex justify-center animate-in" style="animation-delay: 0.3s;">
-                <!-- 条件に応じてボタンが表示される -->
+            <!-- More Button (JSにより生成) -->
+            <div id="more-button-container" class="mt-24 flex justify-center animate-in" style="animation-delay: 0.3s;">
+                <!-- content generated by components.js -->
             </div>
 
         </div>
     </main>
 
-    <!-- 共通フッター (components.jsで挿入) -->
+    <!-- 共通フッター（components.jsにより挿入） -->
     <footer id="common-footer"></footer>
 
-    <!-- 全ページ共通の管理プログラム -->
+    <!-- 共通コンポーネントスクリプト -->
     <script src="components.js"></script>
 </body>
 </html>
-

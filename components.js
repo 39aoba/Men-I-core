@@ -2,7 +2,6 @@ const components = {
     // ==========================================
     // GitHub Pages 用のベースパス設定
     // ==========================================
-    // 自身のレポジトリ名に合わせて設定。末尾にスラッシュを入れる。
     basePath: '/Men-I-core/',
 
     // ==========================================
@@ -36,9 +35,7 @@ const components = {
     // ユーティリティ: 正しいパスを生成する
     // ==========================================
     getPath(relativeLink) {
-        // すでにhttp等で始まっている場合はそのまま返す
         if (relativeLink.startsWith('http')) return relativeLink;
-        // 先頭のスラッシュを削除してbasePathと結合
         return this.basePath + relativeLink.replace(/^\//, '');
     },
 
@@ -71,8 +68,7 @@ const components = {
                     </a>
                 </div>
             </div>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 p-6 flex flex-col gap-6 animate-in">
+            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 p-6 flex flex-col gap-6">
                 <a href="${this.getPath('concept.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Concept</a>
                 <a href="${this.getPath('diagnosis.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Diagnosis</a>
                 <a href="${this.getPath('articles.html')}" class="text-sm font-black tracking-[0.2em] text-slate-900 uppercase italic">Editorial</a>
@@ -88,39 +84,21 @@ const components = {
         }
     },
 
-    // ==========================================
-    // フッター生成
-    // ==========================================
     initFooter() {
         const footer = document.getElementById('common-footer');
         if (!footer) return;
 
         footer.className = "bg-white border-t border-slate-100 pt-24 pb-12 px-6";
         footer.innerHTML = `
-            <div class="max-w-7xl mx-auto">
+            <div class="max-w-7xl mx-auto text-center md:text-left">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-                    <div class="col-span-1 md:col-span-2 space-y-8">
+                    <div class="col-span-1 md:col-span-2 space-y-8 text-left">
                         <a href="${this.getPath('index.html')}" class="text-2xl font-black text-slate-900 tracking-tighter uppercase italic">
                             Men I <span class="text-indigo-600">Core</span>
                         </a>
                         <p class="max-w-sm text-slate-400 text-sm leading-relaxed font-medium">
-                            自分という軸を創るための、メンズセルフケア・プラットフォーム。精密な自己分析と本質的な知見を提供します。
+                            自分という軸を創るための、メンズセルフケア・プラットフォーム。
                         </p>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black tracking-[0.3em] text-slate-900 uppercase italic">Editorial</h4>
-                        <ul class="space-y-4 text-xs font-bold text-slate-400">
-                            <li><a href="${this.getPath('concept.html')}" class="hover:text-indigo-600 transition-colors uppercase tracking-widest">Concept</a></li>
-                            <li><a href="${this.getPath('diagnosis.html')}" class="hover:text-indigo-600 transition-colors uppercase tracking-widest">Diagnosis</a></li>
-                            <li><a href="${this.getPath('articles.html')}" class="hover:text-indigo-600 transition-colors uppercase tracking-widest">Editorial</a></li>
-                        </ul>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black tracking-[0.3em] text-slate-900 uppercase italic">Social</h4>
-                        <ul class="space-y-4 text-xs font-bold text-slate-400">
-                            <li><a href="#" class="hover:text-indigo-600 transition-colors uppercase tracking-widest">Twitter / X</a></li>
-                            <li><a href="#" class="hover:text-indigo-600 transition-colors uppercase tracking-widest">Instagram</a></li>
-                        </ul>
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-slate-50 gap-6">
@@ -134,10 +112,14 @@ const components = {
     // 描画ロジック
     // ==========================================
     renderArticles() {
-        const recentContainer = document.getElementById('recent-articles');
         const gridContainer = document.getElementById('article-grid');
+        if (!gridContainer) return;
         
-        const renderHtml = (list) => list.map(art => `
+        const filtered = this.currentCategory === 'ALL' 
+            ? this.articles 
+            : this.articles.filter(a => a.category === this.currentCategory);
+
+        gridContainer.innerHTML = filtered.slice(0, this.displayLimit).map(art => `
             <article class="group space-y-6 animate-in">
                 <a href="${this.getPath(art.link)}" class="block aspect-[16/10] bg-slate-100 rounded-[2rem] overflow-hidden relative shadow-sm hover:shadow-2xl transition-all duration-500">
                     <div class="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300 opacity-50"></div>
@@ -154,59 +136,57 @@ const components = {
             </article>
         `).join('');
 
-        if (recentContainer) {
-            recentContainer.innerHTML = renderHtml(this.articles.slice(0, 3));
-        }
+        // カテゴリボタンの視覚的状態を更新（ここが重要！）
+        this.updateFilterButtons();
+    },
 
-        if (gridContainer) {
-            const filtered = this.currentCategory === 'ALL' 
-                ? this.articles 
-                : this.articles.filter(a => a.category === this.currentCategory);
-            gridContainer.innerHTML = renderHtml(filtered.slice(0, this.displayLimit));
-        }
+    // ボタンの状態を更新する関数
+    updateFilterButtons() {
+        const buttons = document.querySelectorAll('.category-btn');
+        buttons.forEach(btn => {
+            const category = btn.getAttribute('data-category');
+            if (category === this.currentCategory) {
+                // アクティブ状態のスタイル
+                btn.className = "category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-indigo-600 text-white border border-indigo-600";
+            } else {
+                // 通常状態のスタイル
+                btn.className = "category-btn px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all uppercase italic bg-white border border-slate-100 text-slate-400 hover:border-indigo-600";
+            }
+        });
     },
 
     renderDiagnosis() {
         const diagContainer = document.getElementById('diagnosis-grid');
-        if (diagContainer) {
-            const colorClasses = {
-                indigo: 'bg-indigo-50 text-indigo-600',
-                sky: 'bg-sky-50 text-sky-600',
-                amber: 'bg-amber-50 text-amber-600',
-                emerald: 'bg-emerald-50 text-emerald-600'
-            };
+        if (!diagContainer) return;
+        
+        const colorClasses = {
+            indigo: 'bg-indigo-50 text-indigo-600',
+            sky: 'bg-sky-50 text-sky-600',
+            amber: 'bg-amber-50 text-amber-600',
+            emerald: 'bg-emerald-50 text-emerald-600'
+        };
 
-            diagContainer.innerHTML = this.diagnosisList.map(diag => `
-                <a href="${this.getPath(diag.link)}" class="diagnosis-card group p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:border-indigo-600 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-50 flex flex-col justify-between min-h-[320px]">
-                    <div class="space-y-8">
-                        <div class="flex justify-between items-start">
-                            <div class="icon-box w-14 h-14 ${colorClasses[diag.color] || colorClasses.indigo} rounded-2xl flex items-center justify-center transition-transform">
-                                <i data-lucide="${diag.icon}"></i>
-                            </div>
-                            <span class="text-[10px] font-black tracking-widest text-slate-300 uppercase">${diag.category}</span>
+        diagContainer.innerHTML = this.diagnosisList.map(diag => `
+            <a href="${this.getPath(diag.link)}" class="diagnosis-card group p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:border-indigo-600 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-50 flex flex-col justify-between min-h-[320px]">
+                <div class="space-y-8">
+                    <div class="flex justify-between items-start">
+                        <div class="icon-box w-14 h-14 ${colorClasses[diag.color] || colorClasses.indigo} rounded-2xl flex items-center justify-center transition-transform">
+                            <i data-lucide="${diag.icon}"></i>
                         </div>
-                        <div class="space-y-4">
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tight uppercase italic">${diag.title}</h3>
-                            <p class="text-slate-400 text-sm font-medium leading-relaxed">${diag.desc}</p>
-                        </div>
-                        <div class="pt-4 flex items-center gap-2 text-indigo-600 font-black text-[10px] tracking-[0.2em] uppercase">
-                            Start Test <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
-                        </div>
+                        <span class="text-[10px] font-black tracking-widest text-slate-300 uppercase">${diag.category}</span>
                     </div>
-                </a>
-            `).join('');
-        }
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-black text-slate-900 tracking-tight uppercase italic">${diag.title}</h3>
+                        <p class="text-slate-400 text-sm font-medium leading-relaxed">${diag.desc}</p>
+                    </div>
+                </div>
+            </a>
+        `).join('');
     },
 
     filterArticles(category) {
         this.currentCategory = category;
         this.displayLimit = 6;
-        this.renderArticles();
-        if (window.lucide) window.lucide.createIcons();
-    },
-
-    loadMore() {
-        this.displayLimit += this.increment;
         this.renderArticles();
         if (window.lucide) window.lucide.createIcons();
     },

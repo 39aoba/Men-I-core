@@ -15,6 +15,7 @@ const components = {
     // 記事データベース
     // ==========================================
     articles: [
+        { id: 'post-07', date: '2025.02.15', category: 'FOOD', title: '脳の霧を晴らす食事。仕事の質を最大化する朝の選択', link: 'articles/post-07.html' },
         { id: 'post-06', date: '2025.02.20', category: 'STYLE', title: '少ない服で最高の清潔感。ミニマリスト流・最強の3セット', link: 'articles/post-06.html'   },
         { id: 'post-05', date: '2025.02.15', category: 'CORE', title: '情報のデトックス。1日スマホを置くだけで「軸」が戻る理由', link: 'articles/post-05.html' },
         { id: 'post-04', date: '2025.02.06', category: 'STYLE', title: '自分に似合うを見つける。メンズスタイルの基本', link: 'articles/post-04.html' },
